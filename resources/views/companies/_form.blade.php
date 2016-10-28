@@ -14,6 +14,6 @@
 <div class="form-group">
     <label for="name" class="col-sm-2 control-label">Cidade</label>
     <div class="col-sm-10">
-        {!! Form::text('photo', null, ['class' => 'form-control', 'placeholder' => 'digite qualquer coisa', 'id' => 'name']) !!}
+        {!! Form::text('phone', null, ['class' => 'form-control', 'placeholder' => 'digite qualquer coisa', 'id' => 'name']) !!}
     </div>
 </div>

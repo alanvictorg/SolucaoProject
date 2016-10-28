@@ -22,7 +22,9 @@ class CompanyTransformer extends TransformerAbstract
     {
         return [
             'id'         => (int) $model->id,
-
+            'name'       => $model->name,
+            'manager'       => $model->manager,
+            'phone'       => $model->photo,
             /* place your other model properties here */
 
             'created_at' => $model->created_at,

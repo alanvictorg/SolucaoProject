@@ -146,7 +146,7 @@ class CompaniesController extends Controller
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-            $company = $this->repository->update($id, $request->all());
+            $company = $this->repository->update($request->all(),$id);
 
             $response = [
                 'message' => 'Company updated.',
@@ -158,7 +158,7 @@ class CompaniesController extends Controller
                 return response()->json($response);
             }
 
-            return redirect()->back()->with('message', $response['message']);
+            return redirect()->route('company.index')->with('message', $response['message']);
         } catch (ValidatorException $e) {
 
             if ($request->wantsJson()) {

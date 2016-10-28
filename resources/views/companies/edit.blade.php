@@ -9,7 +9,7 @@
             <small></small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="{{ route('city.index') }}"><i class="fa fa-dashboard"></i> Inicial</a></li>
+            <li><a href="{{ route('company.index') }}"><i class="fa fa-dashboard"></i> Inicial</a></li>
             <li class="active">Cidades</li>
         </ol>
     </section>
@@ -34,19 +34,19 @@
                 </ul>
             @endif
             <div class="box-body">
-                {!! Form::model($city,[
-                                                'route' => ['city.update',$city->id],
+                {!! Form::model($company,[
+                                                'route' => ['company.update',$company->id],
                                                 'class' => 'form-horizontal',
                                                 'method' => 'PUT',
-                                                'id' => 'formCity',
+                                                'id' => 'formCompany',
                                                 'enctype'=> 'multipart/form-data',
 
                                               ])
                                     !!}
-                {!! Form::hidden('id', $city->id) !!}
-                @include('city._form')
+                {!! Form::hidden('id', $company->id) !!}
+                @include('companies._form')
                 <div class="box-footer">
-                    <a href="{{ route('city.index') }}" class="btn btn-default">Cancelar</a>
+                    <a href="{{ route('company.index') }}" class="btn btn-default">Cancelar</a>
                     {!! Form::submit('Salvar Alterações',['class'=>'btn btn-info pull-right']) !!}
                 </div>
                 {!! Form::close() !!}

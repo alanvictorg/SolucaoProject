@@ -13,7 +13,7 @@ class Company extends Model implements Transformable
     protected $fillable = [
 		'name',
 		'manager',
-		'photo',
+		'phone',
 	];
 
 }

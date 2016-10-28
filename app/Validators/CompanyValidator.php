@@ -10,10 +10,10 @@ class CompanyValidator extends LaravelValidator
 
     protected $rules = [
         ValidatorInterface::RULE_CREATE => [
-		''	=>'	photo:required',
+
 	],
         ValidatorInterface::RULE_UPDATE => [
-		''	=>'	photo:required',
+
 	],
    ];
 }

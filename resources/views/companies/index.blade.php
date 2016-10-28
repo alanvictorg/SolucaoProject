@@ -24,9 +24,8 @@
 
                 <div class="box-tools">
                     <!-- Large modal -->
-                    <button class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Cadastrar Empresa</button>
+                    <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modalCompanyCreate">Novo</button>
                 </div>
-            </div>
             <div class="box-body">
                 @if ( session()->has('message') )
                     <div class="alert alert-success alert-dismissable">{{ session()->get('message') }}</div>
@@ -49,7 +48,7 @@
                                 <td>{{ $company->name }}</td>
                                 <td>{{ $company->created_at }}</td>
                                 <td  style="width: 5px;">
-                                    <a href='{{ route('city.edit', ['city_id'=>$company->id])}}' class="btn btn-action btn-info"><i class="fa fa-edit"></i></a>
+                                    <a href='{{ route('company.edit', ['company_id'=>$company->id])}}' class="btn btn-action btn-info"><i class="fa fa-edit"></i></a>
                                 </td>
                             </tr>
                         @endforeach
@@ -71,33 +70,52 @@
 
     </section>
     <!-- /.content -->
-    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+    <div class="modal fade" id="modalCompanyCreate" tabindex="-1" role="dialog" aria-labelledby="modalCompanyCreateLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
-                @if($errors->any())
-                    <ul class="alert">
-                        @foreach($errors->all() as $error)
-                            <li>{{$error}}</li>
-                        @endforeach
-                    </ul>
-                @endif
-                {!! Form::open([
-                            'class' => 'form-horizontal',
-                            'id' => 'formCompany',
-                            'enctype'=> 'multipart/form-data',
-                          ])
-                !!}
-                @include('companies._form')
-                <div class="box-footer">
-                    <a href="{{ route('company.index') }}" class="btn btn-default">Cancelar</a>
-                    {!! Form::submit('Salvar',['class'=>'btn btn-info pull-right']) !!}
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="modalCompanyCreateLabel">New message</h4>
                 </div>
-                {!! Form::close() !!}
+                <div class="modal-body">
+                    {!! Form::open([
+                                                'route' => ['company.store'],
+                                                'class' => 'form-horizontal',
+                                                'method' => 'POST',
+                                                'id' => 'formCompany',
+                                                'enctype'=> 'multipart/form-data',
 
+                                              ])
+                                    !!}
+                        @include('companies._form')
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    {!! Form::submit('Salvar',['class'=>'btn btn-info pull-right']) !!}
+                    {!! Form::close() !!}
+                </div>
             </div>
         </div>
     </div>
-    <script>
+@endsection
 
+@section('script')
+    <script>
+        function createCompany() {
+            var data = $('#form-create').serialize();
+            $.ajax({
+                type:'post',
+                url:'{!!route('company.store')!!}',
+                data :data,
+                success:function(date){
+                    $('#myModal').modal('hide');
+                },error:function(){
+
+                }
+            });
+        }
     </script>
 @endsection
