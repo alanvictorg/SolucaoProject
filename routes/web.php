@@ -11,12 +11,24 @@
 |
 */
 
+use App\Http\Controllers\ProjectsController;
+
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('login');
+});
+Route::get('/home', function () {
+    return redirect('admin/home');
 });
 
 Auth::routes();
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
+    Route::get('home', 'HomeController@index')->name('home.index');
+    Route::resource('company', 'CompaniesController');
+    Route::resource('project', 'ProjectsController');
+    Route::resource('user', 'UsersController');
+    Route::resource('task', 'TasksController');
+    Route::resource('timeline', 'TimeLinesController');
+    Route::resource('resource', 'ResourcesController');
+    Route::get('import','ImportController@index')->name('import.index');
 
-Route::get('/home', 'HomeController@index');
-Route::resource('company', CompaniesController::class);
-Route::resource('home', CompaniesController::class);
+});

@@ -44,7 +44,11 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        &nbsp;
+                            <li><a href="{{route('project.index')}}">Empresas</a></li>                        &nbsp;
+                            <li><a href="{{route('project.index')}}">Projetos</a></li>                        &nbsp;
+                            <li><a href="{{route('task.index')}}">Tarefas</a></li>
+                            <li><a href="{{route('timeline.index')}}">Linha do Tempo</a></li>
+                            <li><a href="{{route('import.index')}}">Imporar Dados</a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
