@@ -11,7 +11,6 @@
 |
 */
 
-use App\Http\Controllers\ProjectsController;
 
 Route::get('/', function () {
     return redirect('login');
@@ -31,4 +30,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::resource('resource', 'ResourcesController');
     Route::get('import','ImportController@index')->name('import.index');
 
+});
+Route::group(['prefix' => 'client', 'namespace' => 'Client'], function () {
+    Route::get('home', 'HomeController@index')->name('home.index');
 });
