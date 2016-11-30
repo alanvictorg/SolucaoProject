@@ -6,16 +6,10 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.6 -->
 {!! Html::style('assets/bootstrap/css/bootstrap.min.css') !!}
-<!-- Font Awesome -->
-{!! Html::style('assets/font-awesome/css/font-awesome.min.css') !!}
 <!-- Ionicons -->
 {!! Html::style('assets/ionicons/css/ionicons.min.css') !!}
 <!-- Theme style -->
-{!! Html::style('assets/dist/css/AdminLTE.min.css') !!}
-<!-- AdminLTE Skins. Choose a skin from the css/skins
-             folder instead of downloading all of them to reduce the load. -->
-{!! Html::style('assets/dist/skins/skin-yellow-light.min.css') !!}
-
+{!! Html::style('assets/dist/css/AdminLTE.css') !!}
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

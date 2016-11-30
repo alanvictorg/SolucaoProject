@@ -2,9 +2,9 @@
     <!-- Logo -->
     <a href="index2.html" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><b>A</b>LT</span>
+        <span class="logo-mini text-blue-base"><b class="text-orange">S</b>P</span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>Admin</b>LTE</span>
+        <span class="logo-lg text-blue-base"><b class="text-orange">SOLUÇÃO</b>PROJECT</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -18,7 +18,7 @@
                 <!-- Messages: style can be found in dropdown.less-->
                 <li class="dropdown messages-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-envelope-o"></i>
+                        <i class="icon ion-email"></i>
                         <span class="label label-success">4</span>
                     </a>
                     <ul class="dropdown-menu">
@@ -33,7 +33,7 @@
                                         </div>
                                         <h4>
                                             Support Team
-                                            <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                                            <small><i class="icon ion-clock-o"></i> 5 mins</small>
                                         </h4>
                                         <p>Why not buy a new awesome theme?</p>
                                     </a>
@@ -46,7 +46,7 @@
                                         </div>
                                         <h4>
                                             AdminLTE Design Team
-                                            <small><i class="fa fa-clock-o"></i> 2 hours</small>
+                                            <small><i class="icon ion-clock-o"></i> 2 hours</small>
                                         </h4>
                                         <p>Why not buy a new awesome theme?</p>
                                     </a>
@@ -58,7 +58,7 @@
                                         </div>
                                         <h4>
                                             Developers
-                                            <small><i class="fa fa-clock-o"></i> Today</small>
+                                            <small><i class="icon ion-clock-o"></i> Today</small>
                                         </h4>
                                         <p>Why not buy a new awesome theme?</p>
                                     </a>
@@ -70,7 +70,7 @@
                                         </div>
                                         <h4>
                                             Sales Department
-                                            <small><i class="fa fa-clock-o"></i> Yesterday</small>
+                                            <small><i class="icon ion-clock-o"></i> Yesterday</small>
                                         </h4>
                                         <p>Why not buy a new awesome theme?</p>
                                     </a>
@@ -82,7 +82,7 @@
                                         </div>
                                         <h4>
                                             Reviewers
-                                            <small><i class="fa fa-clock-o"></i> 2 days</small>
+                                            <small><i class="icon ion-clock-o"></i> 2 days</small>
                                         </h4>
                                         <p>Why not buy a new awesome theme?</p>
                                     </a>
@@ -95,7 +95,7 @@
                 <!-- Notifications: style can be found in dropdown.less -->
                 <li class="dropdown notifications-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-bell-o"></i>
+                        <i class="icon ion-bell-o"></i>
                         <span class="label label-warning">10</span>
                     </a>
                     <ul class="dropdown-menu">
@@ -105,28 +105,28 @@
                             <ul class="menu">
                                 <li>
                                     <a href="#">
-                                        <i class="fa fa-users text-aqua"></i> 5 new members joined today
+                                        <i class="icon ion-users text-aqua"></i> 5 new members joined today
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <i class="fa fa-warning text-yellow"></i> Very long description here that may not fit into the
+                                        <i class="icon ion-warning text-yellow"></i> Very long description here that may not fit into the
                                         page and may cause design problems
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <i class="fa fa-users text-red"></i> 5 new members joined
+                                        <i class="icon ion-users text-red"></i> 5 new members joined
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <i class="fa fa-shopping-cart text-green"></i> 25 sales made
+                                        <i class="icon ion-shopping-cart text-green"></i> 25 sales made
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <i class="fa fa-user text-red"></i> You changed your username
+                                        <i class="icon ion-user text-red"></i> You changed your username
                                     </a>
                                 </li>
                             </ul>
@@ -137,7 +137,7 @@
                 <!-- Tasks: style can be found in dropdown.less -->
                 <li class="dropdown tasks-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-flag-o"></i>
+                        <i class="icon ion-flag-o"></i>
                         <span class="label label-danger">9</span>
                     </a>
                     <ul class="dropdown-menu">
@@ -252,7 +252,7 @@
                 </li>
                 <!-- Control Sidebar Toggle Button -->
                 <li>
-                    <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                    <a href="#" data-toggle="control-sidebar"><i class="icon ion-gears"></i></a>
                 </li>
             </ul>
         </div>

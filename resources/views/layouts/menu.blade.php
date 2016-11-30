@@ -13,12 +13,12 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
-            <li><a href="">Empresas</a></li>
-            <li><a href="">Usuários</a></li>
-            <li><a href="">Projetos</a></li>
-            <li><a href="">Tarefas</a></li>
-            <li><a href="">Linha do Tempo</a></li>
-            <li><a href="">Relatórios</a></li>
+            <li><a href=""> <i class="icon ion-person-stalker"></i> Empresas</a></li>
+            <li><a href=""><i class="icon ion-ios-person"></i> Usuários</a></li>
+            <li><a href=""><i class="icon ion-ios-browsers-outline"></i> Projetos</a></li>
+            <li><a href=""><i class="icon ion-ios-paper-outline"></i> Tarefas</a></li>
+            <li><a href=""><i class="icon ion-ios-clock-outline"></i> Linha do Tempo</a></li>
+            <li><a href=""><i class="icon ion-ios-albums-outline"></i> Relatórios</a></li>
 
         </ul>
     </section>

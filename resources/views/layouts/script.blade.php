@@ -8,3 +8,4 @@
 </script>
 <!-- Bootstrap 3.3.6 -->
 {!! Html::script('assets/bootstrap/js/bootstrap.min.js') !!}
+{!! Html::script('assets/dist/js/app.min.js') !!}
