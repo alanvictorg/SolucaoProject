@@ -12,7 +12,7 @@
         </div>
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
-            <li class="header">MAIN NAVIGATION</li>
+            <li><a href="{{route('admin.import.index')}}">Importar XML</a></li>
             <li><a href="">Empresas</a></li>
             <li><a href="">Usuários</a></li>
             <li><a href="">Projetos</a></li>

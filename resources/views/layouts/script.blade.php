@@ -8,3 +8,5 @@
 </script>
 <!-- Bootstrap 3.3.6 -->
 {!! Html::script('assets/bootstrap/js/bootstrap.min.js') !!}
+
+@yield('script')

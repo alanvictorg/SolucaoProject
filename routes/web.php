@@ -21,14 +21,15 @@ Route::get('/home', function () {
 
 Auth::routes();
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
-    Route::get('home', 'HomeController@index')->name('home.index');
+    Route::get('home', 'HomeController@index')->name('admin.home.index');
     Route::resource('company', 'CompaniesController');
     Route::resource('project', 'ProjectsController');
     Route::resource('user', 'UsersController');
     Route::resource('task', 'TasksController');
     Route::resource('timeline', 'TimeLinesController');
     Route::resource('resource', 'ResourcesController');
-    Route::get('import','ImportController@index')->name('import.index');
+    Route::get('import','ImportController@index')->name('admin.import.index');
+    Route::post('import','ImportController@store')->name('admin.import.store');
 
 });
 Route::group(['prefix' => 'client', 'namespace' => 'Client'], function () {
