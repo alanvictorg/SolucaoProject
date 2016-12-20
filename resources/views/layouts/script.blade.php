@@ -9,4 +9,7 @@
 <!-- Bootstrap 3.3.6 -->
 {!! Html::script('assets/bootstrap/js/bootstrap.min.js') !!}
 
+{!! Html::script('assets/plugins/fastclick/fastclick.js') !!}
+{!! Html::script('assets/dist/js/app.min.js') !!}
+
 @yield('script')
