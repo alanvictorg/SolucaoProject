@@ -64,7 +64,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://solucao.project.local.dev'),
+    'url' => env('APP_URL', 'http://solucaoweb.includetecnologia.com.br'),
 
     /*
     |--------------------------------------------------------------------------
