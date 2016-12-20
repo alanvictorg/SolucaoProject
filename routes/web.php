@@ -26,7 +26,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::resource('project', 'ProjectsController');
     Route::resource('user', 'UsersController');
     Route::resource('task', 'TasksController');
-    Route::resource('timeline', 'TimeLinesController');
+    Route::resource('timeline', 'TimelinesController');
     Route::resource('resource', 'ResourcesController');
     Route::resource('report', 'ResourcesController');
     Route::get('import','ImportController@index')->name('admin.import.index');

@@ -12,8 +12,7 @@
         </div>
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
-            <li class="header">MAIN NAVIGATION</li>
-            <li><a href="{{route('admin.import.index')}}"><i class="icon ion-ios-flame-outline"></i> Importar XML</a></li>
+            <li class="header">Menu</li>
             <li><a href="{{route('company.index')}}"><i class="icon  ion-person-stalker"></i> Empresas</a></li>
             <li><a href="{{route('user.index')}}"><i class="icon ion-ios-person"></i> Usuários</a></li>
             <li><a href="{{route('project.index')}}"><i class="icon ion-ios-browsers-outline"></i> Projetos</a></li>
