@@ -28,8 +28,11 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::resource('task', 'TasksController');
     Route::resource('timeline', 'TimeLinesController');
     Route::resource('resource', 'ResourcesController');
+    Route::resource('report', 'ResourcesController');
     Route::get('import','ImportController@index')->name('admin.import.index');
     Route::post('import','ImportController@store')->name('admin.import.store');
+    Route::get('import/createproject','ImportController@createproject')->name('admin.import.createproject');
+    Route::post('import/storeProject','ImportController@storeProject')->name('admin.import.storeProject');
 
 });
 Route::group(['prefix' => 'client', 'namespace' => 'Client'], function () {

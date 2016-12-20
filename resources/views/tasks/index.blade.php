@@ -5,12 +5,12 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Projetos Cadastradas
+                Tarefas Cadastradas
                 <small>Projetos</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="{{ route('admin.home.index') }}"><i class="fa fa-dashboard"></i> Inicial</a></li>
-                <li class="active">Projetos</li>
+                <li class="active">Tarefas</li>
             </ol>
         </section>
 
@@ -19,11 +19,10 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="box box-info">
-                        <div class="box-header">Projetos Cadastradas
+                        <div class="box-header">Tarefas Cadastradas
                             <div class="box-tools">
                                 <!-- Large modal -->
-                                <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modalProjectCreate">Novo</button>
-                                <a href="{{ route('admin.import.index') }}" class="btn btn-success" >Importar Projeto</a>
+                                <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modalTaskCreate">Novo</button>
                             </div>
                         </div>
                         <div class="box-body">
@@ -35,21 +34,22 @@
                                 <tr>
                                     <th>Id</th>
                                     <th>Empresa</th>
-                                    <th>Nome</th>
+                                    <th>Projeto</th>
+                                    <th>Tarefa</th>
                                     <th>Data de Criação</th>
                                     <th style="width: 5px;" colspan="2" class="text-center">Ações</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @if(!$projects->isEmpty())
-                                    @foreach($projects as $project)
+                                @if(!$tasks->isEmpty())
+                                    @foreach($tasks as $task)
                                         <tr>
-                                            <td>{{ $project->id }}</td>
-                                            <td>{{ $project->company->name }}</td>
-                                            <td>{{ $project->Title }}</td>
-                                            <td>{{ $project->created_at }}</td>
+                                            <td>{{ $task->id }}</td>
+                                            <td>{{ $task->company->name }}</td>
+                                            <td>{{ $task->Title }}</td>
+                                            <td>{{ $task->created_at }}</td>
                                             <td  style="width: 5px;">
-                                                <a href='{{ route('company.edit', [$project->id])}}' class="btn btn-action btn-info"><i class="ion ion-edit"></i></a>
+                                                <a href='{{ route('company.edit', [$task->id])}}' class="btn btn-action btn-info"><i class="ion ion-edit"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach

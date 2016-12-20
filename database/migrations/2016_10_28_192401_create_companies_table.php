@@ -18,7 +18,6 @@ class CreateCompaniesTable extends Migration
 			$table->string('name');
 			$table->string('manager');
 			$table->string('phone');
-
             $table->timestamps();
 		});
 	}

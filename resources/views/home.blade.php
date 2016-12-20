@@ -18,103 +18,48 @@
         <section class="content">
            <section class="projects-list">
                <div class="row">
-                   <div class="col-md-3">
-                       <div class="box">
-                           <div class="box-header">Projeto Green Garden 1</div>
-                           <div class="box-body">
-                               <div class="pulmograma">
-                                   <canvas id="myChart0" width="400" height="400"></canvas>
+                   @if(!$projects->isEmpty())
+                        @foreach($projects->take(5) as $project)
+                           <div class="col-md-3">
+                               <div class="box">
+                                   <div class="box-header">{{ $project->Title }}</div>
+                                   <div class="box-body">
+                                       <div class="pulmograma">
+                                           <canvas id="myChart0" width="400" height="400"></canvas>
+                                       </div>
+                                       <div class="last-tasks">
+                                            <ul class="list-group">
+                                                @foreach($project->tasks->take(5) as $task)
+                                                    <li class="list-group-item">{{$task->Name}} - {{ $task->PercentComplete }} %</li>
+                                                @endforeach
+                                            </ul>
+                                       </div>
+                                       <div class="last-info">
+                                           <ul class="list-group">
+                                               <li class="list-group-item">Data Início: {{ $project->StartDate->format('d-m-Y') }}</li>
+                                               <li class="list-group-item">Data Fim: {{ $project->FinishDate->format('d-m-Y') }}</li>
+                                           </ul>
+                                       </div>
+                                   </div>
                                </div>
-                               <div class="last-tasks">
-                                    <ul class="list-group">
-                                        <li class="list-group-item">LIMPEZA INTERNA HALL 21° PAV - WIND TOWER</li>
-                                        <li class="list-group-item">LIMPEZA INTERNA HALL 20° PAV - WIND TOWER</li>
-                                        <li class="list-group-item">LIMPEZA INTERNA HALL 19° PAV - WIND TOWER</li>
-                                    </ul>
-                               </div>
-                               <div class="last-info">
-                                   <ul class="list-group">
-                                       <li class="list-group-item">Data Início: 03/03/2014</li>
-                                       <li class="list-group-item">Data Fim: 17/08/2020</li>
-                                   </ul>
+                           </div>
+                        @endforeach
+                    @else
+                       <div class="col-md-12">
+                           <div class="box">
+                               <div class="box-header">Sem Informações para Exibir</div>
+                               <div class="box-body">
+                                   <a href="{{route('admin.import.index')}}" class="btn btn-info"> Importar XML</a>
                                </div>
                            </div>
                        </div>
-                   </div>
-                   <div class="col-md-3">
-                       <div class="box">
-                           <div class="box-header">Projeto Green Garden 1</div>
-                           <div class="box-body">
-                               <div class="pulmograma">
-                                   <canvas id="myChart1" width="400" height="400"></canvas>
-                               </div>
-                               <div class="last-tasks">
-                                    <ul class="list-group">
-                                        <li class="list-group-item">LIMPEZA INTERNA HALL 21° PAV - WIND TOWER</li>
-                                        <li class="list-group-item">LIMPEZA INTERNA HALL 20° PAV - WIND TOWER</li>
-                                        <li class="list-group-item">LIMPEZA INTERNA HALL 19° PAV - WIND TOWER</li>
-                                    </ul>
-                               </div>
-                               <div class="last-info">
-                                   <ul class="list-group">
-                                       <li class="list-group-item">Data Início: 03/03/2014</li>
-                                       <li class="list-group-item">Data Fim: 17/08/2020</li>
-                                   </ul>
-                               </div>
-                           </div>
-                       </div>
-                   </div>
-                   <div class="col-md-3">
-                       <div class="box">
-                           <div class="box-header">Projeto Green Garden 1</div>
-                           <div class="box-body">
-                               <div class="pulmograma">
-                                   <canvas id="myChart2" width="400" height="400"></canvas>
-                               </div>
-                               <div class="last-tasks">
-                                    <ul class="list-group">
-                                        <li class="list-group-item">LIMPEZA INTERNA HALL 21° PAV - WIND TOWER</li>
-                                        <li class="list-group-item">LIMPEZA INTERNA HALL 20° PAV - WIND TOWER</li>
-                                        <li class="list-group-item">LIMPEZA INTERNA HALL 19° PAV - WIND TOWER</li>
-                                    </ul>
-                               </div>
-                               <div class="last-info">
-                                   <ul class="list-group">
-                                       <li class="list-group-item">Data Início: 03/03/2014</li>
-                                       <li class="list-group-item">Data Fim: 17/08/2020</li>
-                                   </ul>
-                               </div>
-                           </div>
-                       </div>
-                   </div>
-                   <div class="col-md-3">
-                       <div class="box">
-                           <div class="box-header">Projeto Green Garden 1</div>
-                           <div class="box-body">
-                               <div class="pulmograma">
-                                   <canvas id="myChart3" width="400" height="400"></canvas>
-                               </div>
-                               <div class="last-tasks">
-                                    <ul class="list-group">
-                                        <li class="list-group-item">LIMPEZA INTERNA HALL 21° PAV - WIND TOWER</li>
-                                        <li class="list-group-item">LIMPEZA INTERNA HALL 20° PAV - WIND TOWER</li>
-                                        <li class="list-group-item">LIMPEZA INTERNA HALL 19° PAV - WIND TOWER</li>
-                                    </ul>
-                               </div>
-                               <div class="last-info">
-                                   <ul class="list-group">
-                                       <li class="list-group-item">Data Início: 03/03/2014</li>
-                                       <li class="list-group-item">Data Fim: 17/08/2020</li>
-                                   </ul>
-                               </div>
-                           </div>
-                       </div>
-                   </div>
+                    @endif
            </section>
 
         </section>
         <!-- /.content -->
     </div>
+</div>
 @endsection
 
 

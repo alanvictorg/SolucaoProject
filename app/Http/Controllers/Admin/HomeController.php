@@ -7,18 +7,33 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
 
+use App\Services\ServiceProject;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     /**
+     * @var ServiceProject
+     */
+    private $serviceProject;
+
+    /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(ServiceProject $serviceProject)
     {
         $this->middleware('auth');
+        $this->serviceProject = $serviceProject;
+    }
+
+    /**
+     * @return ServiceProject
+     */
+    public function getServiceProject()
+    {
+        return $this->serviceProject;
     }
 
     /**
@@ -28,6 +43,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $projects = $this->getServiceProject()->getProjetcsHome();
+
+        return view('home', compact('projects'));
     }
 }

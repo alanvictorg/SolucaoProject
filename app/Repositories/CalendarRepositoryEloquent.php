@@ -4,15 +4,15 @@ namespace App\Repositories;
 
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\ProjectRepository;
-use App\Entities\Project;
-use App\Validators\ProjectValidator;
+use App\Repositories\CalendarRepository;
+use App\Entities\Calendar;
+use App\Validators\CalendarValidator;
 
 /**
- * Class ProjectRepositoryEloquent
+ * Class CalendarRepositoryEloquent
  * @package namespace App\Repositories;
  */
-class ProjectRepositoryEloquent extends BaseRepository implements ProjectRepository
+class CalendarRepositoryEloquent extends BaseRepository implements CalendarRepository
 {
     /**
      * Specify Model class name
@@ -21,7 +21,7 @@ class ProjectRepositoryEloquent extends BaseRepository implements ProjectReposit
      */
     public function model()
     {
-        return Project::class;
+        return Calendar::class;
     }
 
     /**
@@ -32,7 +32,7 @@ class ProjectRepositoryEloquent extends BaseRepository implements ProjectReposit
     public function validator()
     {
 
-        return ProjectValidator::class;
+        return CalendarValidator::class;
     }
 
 
@@ -43,5 +43,4 @@ class ProjectRepositoryEloquent extends BaseRepository implements ProjectReposit
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-
 }
