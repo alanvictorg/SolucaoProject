@@ -1,7 +1,5 @@
 <?php
 
-use App\Providers\RepositoryServiceProvider;
-
 return [
 
     /*
@@ -14,18 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'Soluções - Project',
-    /*
-       |--------------------------------------------------------------------------
-       | Application Version
-       |--------------------------------------------------------------------------
-       |
-       | This value is the verion of your application. This value is used when the
-       | framework needs to place the application's version in a notification or
-       | any other location as required by the application or its packages.
-       */
-
-    'version' => '0.0.1',
+    'name' => 'Laravel',
 
     /*
     |--------------------------------------------------------------------------
@@ -38,7 +25,7 @@ return [
     |
     */
 
-    'env' => env('APP_ENV', 'local'),
+    'env' => env('APP_ENV', 'production'),
 
     /*
     |--------------------------------------------------------------------------
@@ -51,7 +38,7 @@ return [
     |
     */
 
-    'debug' => env('APP_DEBUG', true),
+    'debug' => env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -64,7 +51,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://solucaoweb.includetecnologia.com.br'),
+    'url' => env('APP_URL', 'http://localhost'),
 
     /*
     |--------------------------------------------------------------------------
@@ -90,7 +77,7 @@ return [
     |
     */
 
-    'locale' => 'pt-BR',
+    'locale' => 'en',
 
     /*
     |--------------------------------------------------------------------------
@@ -116,7 +103,7 @@ return [
     |
     */
 
-    'key' => env('APP_KEY', 'base64:HprsE2V+Hd9hudTpO4k8Q0tRTmomHcDwdxLeKn262TU='),
+    'key' => env('APP_KEY'),
 
     'cipher' => 'AES-256-CBC',
 
@@ -179,8 +166,7 @@ return [
         /*
          * Package Service Providers...
          */
-
-        //
+        Laravel\Tinker\TinkerServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -190,10 +176,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        Collective\Html\HtmlServiceProvider::class,
-        Prettus\Repository\Providers\RepositoryServiceProvider::class,
-        RepositoryServiceProvider::class,
-        Orchestra\Parser\XmlServiceProvider::class,
 
     ],
 
@@ -214,6 +196,7 @@ return [
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,
         'Blade' => Illuminate\Support\Facades\Blade::class,
+        'Broadcast' => Illuminate\Support\Facades\Broadcast::class,
         'Bus' => Illuminate\Support\Facades\Bus::class,
         'Cache' => Illuminate\Support\Facades\Cache::class,
         'Config' => Illuminate\Support\Facades\Config::class,
@@ -242,9 +225,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'Form' => Collective\Html\FormFacade::class,
-        'Html' => Collective\Html\HtmlFacade::class,
-        'HTML' => Collective\Html\HtmlFacade::class,
-        'XmlParser' => Orchestra\Parser\Xml\Facade::class
+
     ],
+
 ];
