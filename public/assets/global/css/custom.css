@@ -1,0 +1,20 @@
+/*
+ * Copyright (c) 2016. Include Tecnologia http://includetecnologia.com.br
+ */
+body{
+	padding-top:  60px;
+}
+iframe
+{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    min-height: 640px;
+}
+
+.text-orange {
+    color: #e94e1b;
+}
+.text-blue-base {
+    color: #12a19a;
+}

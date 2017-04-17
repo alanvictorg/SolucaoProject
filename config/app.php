@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'Laravel',
+    'name' => env('APP_NAME', 'Laravel'),
 
     /*
     |--------------------------------------------------------------------------
@@ -167,14 +167,8 @@ return [
          * Package Service Providers...
          */
         Laravel\Tinker\TinkerServiceProvider::class,
-        Appstract\Opcache\OpcacheServiceProvider::class,
-        Barryvdh\Debugbar\ServiceProvider::class,
-        Collective\Remote\RemoteServiceProvider::class,
-
         Prettus\Repository\Providers\RepositoryServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
-        Collective\Remote\RemoteServiceProvider::class,
-
         /*
          * Application Service Providers...
          */
@@ -183,6 +177,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\ComposerServiceProvider::class,
+        App\Providers\RepositoryServiceProvider::class,
 
     ],
 
@@ -236,10 +232,6 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Utils' => JansenFelipe\Utils\Utils::class,
         'Mask' => JansenFelipe\Utils\Mask::class,
-        'SSH' => Collective\Remote\RemoteFacade::class,
-        'Charts' => ConsoleTVs\Charts\Facades\Charts::class,
-
-
     ],
 
 ];
