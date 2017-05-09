@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Entities\Company;
+use App\Repositories\UserRoleRepository;
+use App\Service\ServiceCompanies;
 use App\Service\ServiceRole;
 use App\Service\ServiceUser;
 use Illuminate\Http\Request;
@@ -39,6 +42,14 @@ class UsersController extends Controller
      * @var ServiceUser
      */
     private $serviceUser;
+    /**
+     * @var ServiceCompanies
+     */
+    private $serviceCompanies;
+    /**
+     * @var UserRoleRepository
+     */
+    private $userRoleRepository;
 
     /**
      * UsersController constructor.
@@ -47,12 +58,37 @@ class UsersController extends Controller
      * @param ServiceUser $serviceUser
      * @param ServiceRole $serviceRole
      */
-    public function __construct(UserRepository $repository, UserValidator $validator, ServiceUser $serviceUser, ServiceRole $serviceRole)
+    public function __construct(
+        UserRepository $repository,
+        UserValidator $validator,
+        ServiceUser $serviceUser,
+        ServiceRole $serviceRole,
+        ServiceCompanies $serviceCompanies,
+        UserRoleRepository $userRoleRepository
+    )
     {
         $this->repository = $repository;
         $this->validator  = $validator;
         $this->serviceRole = $serviceRole;
         $this->serviceUser = $serviceUser;
+        $this->serviceCompanies = $serviceCompanies;
+        $this->userRoleRepository = $userRoleRepository;
+    }
+
+    /**
+     * @return UserRoleRepository
+     */
+    public function getUserRoleRepository()
+    {
+        return $this->userRoleRepository;
+    }
+
+    /**
+     * @return ServiceCompanies
+     */
+    public function getServiceCompanies()
+    {
+        return $this->serviceCompanies;
     }
 
     /**
@@ -86,6 +122,7 @@ class UsersController extends Controller
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
         $users = $this->getServiceUser()->getUsers();
         $roles = $this->getServiceRole()->getRoleList();
+        $companies = $this->getServiceCompanies()->getCompanyList();
         if (request()->wantsJson()) {
 
             return response()->json([
@@ -93,7 +130,7 @@ class UsersController extends Controller
             ]);
         }
 
-        return view('admin.users.index', compact('users', 'roles'));
+        return view('admin.users.index', compact('users', 'roles', 'companies'));
     }
 
     /**
@@ -113,11 +150,14 @@ class UsersController extends Controller
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
             $data = $request->all();
-            dd($data);
-            $user = $this->repository->create($request->all());
-
+            $user = $this->repository->create($data);
+            $role_user = [
+                'role_id'=>$data['role_id'],
+                'user_id'=>$user->id,
+            ];
+            $roleuser = $this->getUserRoleRepository()->create($role_user);
             $response = [
-                'message' => 'User created.',
+                'message' => 'Usuário Cadastrado! Com sucesso!',
                 'data'    => $user->toArray(),
             ];
 
@@ -177,8 +217,9 @@ class UsersController extends Controller
         }
         $user = $this->repository->find($id);
         $roles = $this->getServiceRole()->getRoleList();
+        $companies = $this->getServiceCompanies()->getCompanyList();
 
-        return view('admin.users.edit', compact('user', 'roles'));
+        return view('admin.users.edit', compact('user', 'roles', 'companies'));
     }
 
 

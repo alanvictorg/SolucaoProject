@@ -22,11 +22,26 @@
             <small class="text-danger">{{ $errors->first('password') }}</small>
         </div>
     </div>
+    {{--{{dd($user->roles)}}--}}
     <div class="col-md-12">
         <div class="form-group{{ $errors->has('role_id') ? ' has-error' : '' }}">
-            {!! Form::label('role_id', 'Senha', ['class' => 'form-label']) !!}
+            {!! Form::label('role_id', 'Função', ['class' => 'form-label']) !!}
             {!! Form::select('role_id', $roles ,isset($user)? $user->roles->first()->id : null,['id'=>'role_id','class' => 'form-control', 'placeholder'=>'Escolha a função']) !!}
             <small class="text-danger">{{ $errors->first('role_id') }}</small>
+        </div>
+    </div>
+{{--    {{$user->company}}--}}
+    @if(isset($user))
+        <div class="user-company">
+    @else
+        <div class="hidden user-company">
+    @endif
+        <div class="col-md-12">
+            <div class="form-group{{ $errors->has('company_id') ? ' has-error' : '' }}">
+                {!! Form::label('company_id', 'Empresa', ['class' => 'form-label']) !!}
+                {!! Form::select('company_id', $companies ,isset($user)? $user->company->id : null,['id'=>'company_id','class' => 'form-control', 'placeholder'=>'Escolha a função']) !!}
+                <small class="text-danger">{{ $errors->first('company_id') }}</small>
+            </div>
         </div>
     </div>
 </div>

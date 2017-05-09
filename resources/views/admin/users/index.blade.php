@@ -106,11 +106,24 @@
 
 @section('page_scripts')
     <!-- Load JS here for greater good =============================-->
-    {{--<script>--}}
-        {{--$('document').ready(function () {--}}
+    <script>
+        $('document').ready(function () {
 
-            {{--$('#role_id').select2();--}}
-        {{--});--}}
+//            $('#role_id').select2();
+            $('#role_id').change( function () {
+                 var role = $('#role_id').val();
+                 var user_company = $('.user-company');
+                 if(role > 2)
+                 {
+                    user_company.removeClass('hidden')
+                 }else
+                     {
+                        $('#company_id').val('');
+                        user_company.addClass('hidden')
+                     }
 
-    {{--</script>--}}
+            });
+        });
+
+    </script>
 @endsection

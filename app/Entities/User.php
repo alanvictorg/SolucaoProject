@@ -20,7 +20,7 @@ class User extends Authenticatable implements Transformable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','company_id',
     ];
 
     /**
@@ -45,5 +45,9 @@ class User extends Authenticatable implements Transformable
     {
         $user_permission = $this->roles->first()->permissions;
         return $user_permission->contains('name',$permission->name);
+    }
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
     }
 }
