@@ -15,6 +15,15 @@ class Import extends Model implements Transformable
         'project_id',
         'user_id',
         'file',
+        'status'
     ];
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
 
 }

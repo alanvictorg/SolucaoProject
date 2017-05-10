@@ -3,6 +3,9 @@
 
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
+use App\Repositories\CompanyRepository;
+use App\Service\ServiceProject;
+use App\Service\ServiceTasks;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -28,11 +31,50 @@ class ImportsController extends Controller
      * @var ImportValidator
      */
     protected $validator;
+    /**
+     * @var CompanyRepository
+     */
+    private $companyRepository;
+    /**
+     * @var ServiceProject
+     */
+    private $serviceProject;
+    /**
+     * @var ServiceTasks
+     */
+    private $serviceTasks;
 
-    public function __construct(ImportRepository $repository, ImportValidator $validator)
+    public function __construct(ImportRepository $repository, ImportValidator $validator, CompanyRepository $companyRepository, ServiceProject $serviceProject, ServiceTasks $serviceTasks)
     {
         $this->repository = $repository;
         $this->validator  = $validator;
+        $this->companyRepository = $companyRepository;
+        $this->serviceProject = $serviceProject;
+        $this->serviceTasks = $serviceTasks;
+    }
+
+    /**
+     * @return ServiceTasks
+     */
+    public function getServiceTasks()
+    {
+        return $this->serviceTasks;
+    }
+
+    /**
+     * @return ServiceProject
+     */
+    public function getServiceProject()
+    {
+        return $this->serviceProject;
+    }
+
+    /**
+     * @return CompanyRepository
+     */
+    public function getCompanyRepository()
+    {
+        return $this->companyRepository;
     }
 
 
@@ -44,8 +86,8 @@ class ImportsController extends Controller
     public function index()
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $imports = $this->repository->paginate();
-
+        $imports = $this->repository->orderBy('id', 'desc')->paginate();
+        $companies = $this->getCompanyRepository()->all()->pluck('name','id');
         if (request()->wantsJson()) {
 
             return response()->json([
@@ -53,7 +95,7 @@ class ImportsController extends Controller
             ]);
         }
 
-        return view('admin.imports.index', compact('imports'));
+        return view('admin.imports.index', compact('imports', 'companies'));
     }
 
     /**
@@ -69,38 +111,34 @@ class ImportsController extends Controller
         try {
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-
             $data = $request->all();
-
-
-            $filename = Storage::disk('public')->putFile('', $request->file('file'));
-
-            $filepath = public_path('uploads/' . $filename);
-
-            $directory = public_path('uploads/files');
-            if (!file_exists($directory)) {
+            $filename =  basename($request->file('filexml')->getClientOriginalName(), '.'.$request->file('filexml')->getClientOriginalExtension());
+            $file =  str_slug($filename).'.'.$request->file('filexml')->getClientOriginalExtension();
+            $directory = 'uploads/files/';
+            if (!file_exists(public_path($directory))) {
                 //criar
-                mkdir($directory, 0777, true);
+                mkdir( public_path($directory), 0777, true);
             }
-            $content = $directory . '/' . $filepath;
+            if(file_exists($directory.$file))
+            {
+                unlink($directory.$file);
+            }
 
+            $path = $request->file('filexml')->storeAs($directory, $file, 'public');
 
-            $data[ 'user_id'] = Auth::user()->id;
-            $data[ 'file'] = $filepath;
-
+            $data['user_id'] = Auth::user()->id;
+            $data['file'] = public_path($directory.$file);
             $import = $this->repository->create($data);
-
             $response = [
                 'message' => 'Arquivo Importado.',
                 'data'    => $import->toArray(),
             ];
-
             if ($request->wantsJson()) {
 
                 return response()->json($response);
             }
 
-            return redirect()->back()->with('message', $response['message']);
+            return redirect()->route('imports.show', [$import])->with('message', $response['message']);
         } catch (ValidatorException $e) {
             if ($request->wantsJson()) {
                 return response()->json([
@@ -124,7 +162,74 @@ class ImportsController extends Controller
     public function show($id)
     {
         $import = $this->repository->find($id);
-
+        $file = file_get_contents($import->file);
+        $xml = simplexml_load_file($import->file);
+        $projeto = [
+            "Name" => $xml->Name->__toString(),
+            "Title" => $xml->Title->__toString(),
+            "Author" => $xml->Author->__toString(),
+            "CreationDate" => $xml->CreationDate->__toString(),
+            "LastSaved" => $xml->LastSaved->__toString(),
+            "ScheduleFromStart" => $xml->ScheduleFromStart->__toString(),
+            "StartDate" => $xml->StartDate->__toString(),
+            "FinishDate" => $xml->FinishDate->__toString(),
+            "FYStartDate" => $xml->FYStartDate->__toString(),
+            "CriticalSlackLimit" => $xml->CriticalSlackLimit->__toString(),
+            "CurrencyDigits" => $xml->CurrencyDigits->__toString(),
+            "CurrencySymbol" => $xml->CurrencySymbol->__toString(),
+            "CurrencyCode" => $xml->CurrencyCode->__toString(),
+            "CurrencySymbolPosition" => $xml->CurrencySymbolPosition->__toString(),
+            "CalendarUID" => $xml->CalendarUID->__toString(),
+            "BaselineCalendar" => $xml->BaselineCalendar->__toString(),
+            "DefaultStartTime" => $xml->DefaultStartTime->__toString(),
+            "DefaultFinishTime" => $xml->DefaultFinishTime->__toString(),
+            "MinutesPerDay" => $xml->MinutesPerDay->__toString(),
+            "MinutesPerWeek" => $xml->MinutesPerWeek->__toString(),
+            "DaysPerMonth" => $xml->DaysPerMonth->__toString(),
+            "DefaultTaskType" => $xml->DefaultTaskType->__toString(),
+            "DefaultFixedCostAccrual" => $xml->DefaultFixedCostAccrual->__toString(),
+            "DefaultStandardRate" => $xml->DefaultStandardRate->__toString(),
+            "DefaultOvertimeRate" => $xml->DefaultOvertimeRate->__toString(),
+            "DurationFormat" => $xml->DurationFormat->__toString(),
+            "WorkFormat" => $xml->WorkFormat->__toString(),
+            "EditableActualCosts" => $xml->EditableActualCosts->__toString(),
+            "HonorConstraints" => $xml->HonorConstraints->__toString(),
+            "InsertedProjectsLikeSummary" => $xml->InsertedProjectsLikeSummary->__toString(),
+            "MultipleCriticalPaths" => $xml->MultipleCriticalPaths->__toString(),
+            "NewTasksEffortDriven" => $xml->NewTasksEffortDriven->__toString(),
+            "NewTasksEstimated" => $xml->NewTasksEstimated->__toString(),
+            "SplitsInProgressTasks" => $xml->SplitsInProgressTasks->__toString(),
+            "SpreadActualCost" => $xml->SpreadActualCost->__toString(),
+            "SpreadPercentComplete" => $xml->SpreadPercentComplete->__toString(),
+            "TaskUpdatesResource" => $xml->TaskUpdatesResource->__toString(),
+            "FiscalYearStart" => $xml->FiscalYearStart->__toString(),
+            "WeekStartDay" => $xml->WeekStartDay->__toString(),
+            "MoveCompletedEndsBack" => $xml->MoveCompletedEndsBack->__toString(),
+            "MoveRemainingStartsBack" => $xml->MoveRemainingStartsBack->__toString(),
+            "MoveRemainingStartsForward" => $xml->MoveRemainingStartsForward->__toString(),
+            "MoveCompletedEndsForward" => $xml->MoveCompletedEndsForward->__toString(),
+            "BaselineForEarnedValue" => $xml->BaselineForEarnedValue->__toString(),
+            "AutoAddNewResourcesAndTasks" => $xml->AutoAddNewResourcesAndTasks->__toString(),
+            "StatusDate" => $xml->StatusDate->__toString(),
+            "CurrentDate" => $xml->CurrentDate->__toString(),
+            "MicrosoftProjectServerURL" => $xml->MicrosoftProjectServerURL->__toString(),
+            "Autolink" => $xml->Autolink->__toString(),
+            "NewTaskStartDate" => $xml->NewTaskStartDate->__toString(),
+            "NewTasksAreManual" => $xml->NewTasksAreManual->__toString(),
+            "DefaultTaskEVMethod" => $xml->DefaultTaskEVMethod->__toString(),
+            "ProjectExternallyEdited" => $xml->ProjectExternallyEdited->__toString(),
+            "ExtendedCreationDate" => $xml->ExtendedCreationDate->__toString(),
+            "ActualsInSync" => $xml->ActualsInSync->__toString(),
+            "RemoveFileProperties" => $xml->RemoveFileProperties->__toString(),
+            "AdminProject" => $xml->AdminProject->__toString(),
+            "UpdateManuallyScheduledTasksWhenEditingLinks" => $xml->UpdateManuallyScheduledTasksWhenEditingLinks->__toString(),
+            "KeepTaskOnNearestWorkingTimeWhenMadeAutoScheduled" => $xml->KeepTaskOnNearestWorkingTimeWhenMadeAutoScheduled->__toString(),
+        ];
+        $tasks = collect(collect(json_decode(json_encode($xml->Tasks),true  ))->first());
+        $resources = collect(collect(json_decode(json_encode($xml->Resources),true  ))->first());
+        $pulmao = $tasks->where('Name',"=", 'PULMÃO DE PROJETO')->first();
+        $total_tarefas = $tasks->count();
+        $company = $this->getCompanyRepository()->find($import->company_id);
         if (request()->wantsJson()) {
 
             return response()->json([
@@ -132,7 +237,7 @@ class ImportsController extends Controller
             ]);
         }
 
-        return view('admin.imports.show', compact('import'));
+        return view('admin.imports.show', compact('import', 'projeto', 'tasks', 'pulmao', 'total_tarefas', 'resources', 'company'));
     }
 
 
@@ -215,5 +320,32 @@ class ImportsController extends Controller
         }
 
         return redirect()->back()->with('message', 'Import deleted.');
+    }
+
+    public function import(Request $request)
+    {
+        $data = $request->all();
+
+//        importacao de dados do projeto
+        $project = $this->getServiceProject()->tratarImport($data['project']);
+        $tasks = $this->getServiceTasks()->tratarImport($this->getTaskByFile($data['filepath']), $project);
+//        dd($tasks);
+//        $resouces = $this->getServiceProject()->tratarImport($data['resources']);
+        //set import como concluído
+        $import = $this->repository->find($data['id']);
+        $import->project_id = $project->id;
+        $import->status = '1';
+        $import->save();
+        return redirect()->route('imports.index')->with(['message'=>'Sincronização concluída!']);
+
+
+
+    }
+    public function getTaskByFile($file)
+    {
+
+        $xml = simplexml_load_file($file);
+        $tasks = collect(collect(json_decode(json_encode($xml->Tasks),true  ))->first());
+        return $tasks;
     }
 }

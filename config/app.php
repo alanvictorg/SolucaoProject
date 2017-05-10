@@ -169,6 +169,8 @@ return [
         Laravel\Tinker\TinkerServiceProvider::class,
         Prettus\Repository\Providers\RepositoryServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        Orchestra\Parser\XmlServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
@@ -232,6 +234,8 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Utils' => JansenFelipe\Utils\Utils::class,
         'Mask' => JansenFelipe\Utils\Mask::class,
+        'XmlParser' => Orchestra\Parser\Xml\Facade::class,
+
     ],
 
 ];

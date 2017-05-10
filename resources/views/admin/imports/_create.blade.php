@@ -3,12 +3,12 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Novo Empresa</h4>
+            <h4 class="modal-title">Novo Importação</h4>
             </div>
             <div class="modal-body">
                 @include('errors._check')
 
-                {!! Form::open(['url'=>route("$module_name.store")]) !!}
+                {!! Form::open(['url'=>route("$module_name.store"), 'files'=>true]) !!}
                     @include("admin.$module_name._form")
 
             </div>
@@ -16,7 +16,7 @@
             <div class="modal-footer">
                 <div id="category-success">
                     {!! Form::submit( 'Salvar', ['class'=>'btn btn-primary pull-right']) !!}
-                    {!! Form::close() !!}
+                {!! Form::close() !!}
                 </div>
             </div>
         </div>

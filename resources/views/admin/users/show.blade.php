@@ -1,9 +1,8 @@
-@extends('backend.layouts.dashboard')
+@extends('layouts.base')
 @section('page_styles')
 
 
 @endsection
-
 @section('content')
     <article class="content items-list-page">
         <div class="title-block">
@@ -23,7 +22,7 @@
                                    Usuário
                                 </h3> </div>
                             <!-- Nav tabs -->
-                            <ul class="nav nav-pills">
+                            <ul class="nav nav-pills nav-justified">
                                 <li class="nav-item"> <a href="" class="nav-link active" data-target="#home-pills" aria-controls="home-pills" data-toggle="tab" role="tab">Perfil</a> </li>
                                 <li class="nav-item"> <a href="" class="nav-link" data-target="#profile-pills" aria-controls="profile-pills" data-toggle="tab" role="tab">Modulos</a> </li>
                                 <li class="nav-item"> <a href="" class="nav-link" data-target="#messages-pills" aria-controls="messages-pills" data-toggle="tab" role="tab">Roles</a> </li>
@@ -45,16 +44,26 @@
 
                                 </div>
                                 <div class="tab-pane fade" id="profile-pills">
-                                    <h4>Profile Tab</h4>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                                        ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-                                        deserunt mollit anim id est laborum.</p>
+                                    <h4>Permissões do Usuário</h4>
+                                    <p>
+                                        <ul>
+
+
+                                        @forelse($permissions as $permission)
+                                            <li>{!! $permission->name !!} @if($user->hasPermission($permission)) <label class="label-success">Permitido</label></li>@endif
+                                            @empty
+                                        @endforelse
+                                    </ul>
+                                    </p>
                                 </div>
                                 <div class="tab-pane fade" id="messages-pills">
-                                    <h4>Messages Tab</h4>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                                        ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-                                        deserunt mollit anim id est laborum.</p>
+                                    <h4>Papéis</h4>
+                                    <p>
+                                        @forelse($user->roles as $role)
+                                            {!! $role->name !!}
+                                        @empty
+                                        @endforelse
+                                    </p>
                                 </div>
                                 <div class="tab-pane fade" id="settings-pills">
                                     <h4>Settings Tab</h4>

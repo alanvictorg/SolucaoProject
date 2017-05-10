@@ -13,7 +13,7 @@
                         <h3 class="title">
                             @include('errors._check')
 
-                            Projetos
+                            Projetos da Empresa - {!! $projects->first()->company->name !!}
                             @can("$module_name-create")
                                 <a href="#" data-toggle="modal" data-target="#createmodal"
                                    class="btn btn-primary btn-sm rounded-s"><i class="fa fa-plus icon"></i> Adicionar um
@@ -47,9 +47,9 @@
                             <div class="item-col item-col-name">
                                 <div class="item-heading">Nome</div>
                                 <div>
-                                    <a href="{{ route("$module_name.edit",[$row]) }}" class="">
+                                    <a href="{{ route("$module_name.show",[$row]) }}" class="">
                                         <h4 class="item-title">
-                                            {{ $row->name }}
+                                            {{ $row->Title }}
                                         </h4></a>
                                 </div>
                             </div>
@@ -92,7 +92,7 @@
             </ul>
         </div>
         <nav class="text-xs-right">
-            {!!  $projects->appends(['sort'=>'id'])->links() !!}
+            {{--            {!!  $projects->appends(['sort'=>'id'])->links() !!}--}}
         </nav>
     </article>
 

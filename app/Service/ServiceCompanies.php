@@ -36,6 +36,10 @@ class ServiceCompanies
         return $this->companyRepository;
     }
 
+    public function getCompanies()
+    {
+        return $this->getCompanyRepository()->paginate();
+    }
     public function getCompanyList()
     {
         if(Auth::user()->roles->first()->id >3 )

@@ -15,6 +15,8 @@ class CreateTasksTable extends Migration
 	{
 		Schema::create('tasks', function(Blueprint $table) {
             $table->increments('id');
+            $table->uuid('UID');
+            $table->integer('CalendarUID');
             $table->integer('project_id')->unsigned();
             $table->foreign('project_id')->references('id')->on('projects');
             $table->string('Name')->nullable()->default(null);
@@ -68,6 +70,7 @@ class CreateTasksTable extends Migration
             $table->integer('OvertimeCost')->nullable()->default(null);
             $table->string('OvertimeWork')->nullable()->default(null);
             $table->dateTime('ActualStart')->nullable()->default(null);
+            $table->dateTime('ActualFinish')->nullable()->default(null);
             $table->string('ActualDuration')->nullable()->default(null);
             $table->double('ActualCost')->nullable()->default(null);
             $table->integer('ActualOvertimeCost')->nullable()->default(null);
@@ -95,6 +98,10 @@ class CreateTasksTable extends Migration
             $table->integer('EarnedValueMethod')->nullable()->default(null);
             $table->integer('IsPublished')->nullable()->default(null);
             $table->integer('CommitmentType')->nullable()->default(null);
+            $table->string('TimephasedData')->nullable()->default(null);
+            $table->string('Baseline')->nullable()->default(null);
+            $table->string('ExtendedAttribute')->nullable()->default(null);
+            $table->integer('PredecessorLink')->nullable()->default(null);
             $table->timestamps();
 		});
 	}

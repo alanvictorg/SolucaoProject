@@ -57,6 +57,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::group(['imports'], function () {
             Route::resource('imports', 'ImportsController');
             Route::post('imports/search', 'ImportsController@search')->name('imports.search');
+            Route::post('imports/import', 'ImportsController@import')->name('imports.import');
         });
     });
 

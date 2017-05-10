@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\ProjectCreateRequest;
@@ -56,9 +57,16 @@ class ProjectsController extends Controller
      */
     public function index()
     {
+        $company = Input::get('company');
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $projects = $this->repository->paginate();
-            if($projects->isEmpty()){
+        if (!$company)
+        {
+            $companies = $this->getServiceCompanies()->getCompanies();
+            return view('admin.projects.choosecompany', compact("companies"))->with(['message'=>'Escolha uma empresa']);
+        }
+        $projects = $this->repository->findWhere(['company_id'=>$company]);
+
+        if($projects->isEmpty()){
             return redirect()->route('imports.index');
         }
         $companies =$this->getServiceCompanies()->getCompanyList();

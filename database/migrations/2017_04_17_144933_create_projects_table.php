@@ -73,6 +73,8 @@ class CreateProjectsTable extends Migration
             $table->integer('AdminProject');
             $table->integer('UpdateManuallyScheduledTasksWhenEditingLinks');
             $table->integer('KeepTaskOnNearestWorkingTimeWhenMadeAutoScheduled');
+            $table->string('ScheduleFromStart');
+            $table->string('MicrosoftProjectServerURL');
             $table->timestamps();
 		});
 	}

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Entities\Company;
+use App\Repositories\PermissionsRepository;
 use App\Repositories\UserRoleRepository;
 use App\Service\ServiceCompanies;
 use App\Service\ServiceRole;
@@ -50,6 +51,10 @@ class UsersController extends Controller
      * @var UserRoleRepository
      */
     private $userRoleRepository;
+    /**
+     * @var PermissionsRepository
+     */
+    private $permissionsRepository;
 
     /**
      * UsersController constructor.
@@ -64,7 +69,8 @@ class UsersController extends Controller
         ServiceUser $serviceUser,
         ServiceRole $serviceRole,
         ServiceCompanies $serviceCompanies,
-        UserRoleRepository $userRoleRepository
+        UserRoleRepository $userRoleRepository,
+        PermissionsRepository $permissionsRepository
     )
     {
         $this->repository = $repository;
@@ -73,6 +79,15 @@ class UsersController extends Controller
         $this->serviceUser = $serviceUser;
         $this->serviceCompanies = $serviceCompanies;
         $this->userRoleRepository = $userRoleRepository;
+        $this->permissionsRepository = $permissionsRepository;
+    }
+
+    /**
+     * @return PermissionsRepository
+     */
+    public function getPermissionsRepository()
+    {
+        return $this->permissionsRepository;
     }
 
     /**
@@ -189,8 +204,13 @@ class UsersController extends Controller
      */
     public function show($id)
     {
+        if (Gate::denies('user-view'))
+        {
+            abort(403, 'Não Autorizado');
+        }
         $user = $this->repository->find($id);
-
+        $permissions = $this->getPermissionsRepository()->all();
+        $role = $user->role;
         if (request()->wantsJson()) {
 
             return response()->json([
@@ -198,7 +218,7 @@ class UsersController extends Controller
             ]);
         }
 
-        return view('admin.users.show', compact('user'));
+        return view('admin.users.show', compact('user', 'permissions', 'role'));
     }
 
 
