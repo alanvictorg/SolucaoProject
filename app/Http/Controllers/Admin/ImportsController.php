@@ -125,7 +125,7 @@ class ImportsController extends Controller
             }
 
             $path = $request->file('filexml')->storeAs($directory, $file, 'public');
-
+            chmod($directory.$file, 0777, true);
             $data['user_id'] = Auth::user()->id;
             $data['file'] = public_path($directory.$file);
             $import = $this->repository->create($data);
