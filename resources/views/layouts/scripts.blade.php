@@ -6,6 +6,7 @@
 <script src="{{ asset('assets/js/sweetalert.min.js') }}"></script>
 <script src="{{ asset('assets/js/custom.js') }}"></script>
 <script src="{{ asset('assets/js/select2.full.js') }}"></script>
+<script src="{{ asset('assets/plugins/canvasjs/canvasjs.min.js') }}"></script>
 
 <script type="text/javascript">
 

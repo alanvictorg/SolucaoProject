@@ -97,6 +97,22 @@ class Task extends Model implements Transformable
 //        "TimephasedData"
     ];
 
+    protected $dates = [
+        'Start',
+        'Finish',
+        'CreateDate',
+        'ManualStart',
+        'ManualFinish',
+        'Stop',
+        'Resume',
+        'EarlyStart',
+        'EarlyFinish',
+        'LateStart',
+        'LateFinish',
+        'ActualStart',
+        'ActualFinish',
+
+    ];
     public function project()
     {
         return $this->belongsTo(Project::class);

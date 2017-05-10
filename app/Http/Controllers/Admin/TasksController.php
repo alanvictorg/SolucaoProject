@@ -3,9 +3,11 @@
 
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use JansenFelipe\Utils\Utils;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\TaskCreateRequest;
@@ -105,6 +107,11 @@ class TasksController extends Controller
     {
         $task = $this->repository->find($id);
         // Alterar a duracao restante
+
+        $date_finish = Carbon::parse($task->Finish);
+        $date_start = Carbon::parse($task->Start);
+        $duration = $date_finish->diffInDays($date_start);
+        $custo = Utils::moeda($task->Cost);
         if (request()->wantsJson()) {
 
             return response()->json([
@@ -112,7 +119,7 @@ class TasksController extends Controller
             ]);
         }
 
-        return view('admin.tasks.show', compact('task'));
+        return view('admin.tasks.show', compact('task', 'duration', 'custo'));
     }
 
 

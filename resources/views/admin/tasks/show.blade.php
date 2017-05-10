@@ -18,17 +18,27 @@
                 <div class="col-xl-12">
                     <div class="card sameheight-item">
                         <div class="card-block">
+                            <div class="row">
                             <div class="col-md-6">
-                                Informacoes
-                                Duracao:{!! $task->Finish  !!}{{$task->Start}}
-                                Custo:
-                                DI
-                                DT
-                                Recurso
-                                Anotacoes
+                                <h1>Informações</h1>
+                                <h4>Duracao: {!! $duration !!} dias</h4>
+                                <h4>Custo: {!! $custo !!}</h4>
+                                <h4>Início: {!! $task->Start->format('d/m/Y') !!}</h4>
+                                <h4>Fim:  {!! $task->Finish->format('d/m/Y') !!}</h4>
+                                <h4>Recurso: </h4>
+                                <h4>Anotacoes:
+                                    @can('tasks-edit')
+                                        {!! Form::textarea('annotations', isset($task->annotation)? $task->annotation : "", ['class'=>'form-control','autofocus', "placeholder"=>'Sem observações']) !!}
+                                    @elsecan('tasks-view')
+                                        {!! isset($task->annotation)? $task->annotation : "Sem observações" !!}
+
+                                    @endcan
+                                </h4>
+
                             </div>
                             <div class="col-md-6">
                                 Gantt com Predecessora e sucessora
+                            </div>
                             </div>
                         </div>
                         <!-- /.card-block -->
