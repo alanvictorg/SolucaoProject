@@ -1,7 +1,7 @@
 <aside class="sidebar">
     <div class="sidebar-container">
         <div class="sidebar-header">
-            <img src="{{ asset('assets/global/img/logo_include_white.png') }}" alt="" class="img-responsive logo">
+            <img src="{{ asset('assets/img/logo_solucao.png') }}" alt="" class="img-responsive logo">
         </div>
         <nav class="menu">
             <ul class="nav metismenu" id="sidebar-menu">

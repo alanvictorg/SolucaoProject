@@ -104,7 +104,7 @@ class TasksController extends Controller
     public function show($id)
     {
         $task = $this->repository->find($id);
-
+        // Alterar a duracao restante
         if (request()->wantsJson()) {
 
             return response()->json([

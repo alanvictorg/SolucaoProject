@@ -72,7 +72,7 @@
                         <li class="nav-item"><a href="" class="nav-link " data-target="#tasks-resource-pills"
                                                 aria-controls="home-pills" data-toggle="tab" role="tab">Tarefas Por Recurso</a></li>
                         <li class="nav-item"><a href="" class="nav-link active" data-target="#charts-pills"
-                                                aria-controls="profile-pills" data-toggle="tab" role="tab">Gráficos</a>
+                                                aria-controls="profile-pills" data-toggle="tab" role="tab">Pulmograma</a>
                         </li>
                         <li class="nav-item"><a href="" class="nav-link" data-target="#resources-pills"
                                                 aria-controls="messages-pills" data-toggle="tab" role="tab">Recursos</a>
@@ -96,7 +96,7 @@
                                 @forelse($project->tasks as $task)
                                     <tr>
                                         <td> {{$task->WBS}}</td>
-                                        <td> {{$task->Name}}</td>
+                                        <td><a href="{{ route('tasks.show', [$task]) }}"> {{$task->Name}}</a></td>
                                         <td> {{$task->Duration}}</td>
                                         <td {!!  $task->PercentComplete == 100.00 ? 'class="text-success"' : "" !!}> {{$task->PercentComplete }}
                                             %
@@ -128,9 +128,18 @@
                         </div><div class="tab-pane fade" id="charts-pills">
                             Pulmograma
                             <div class="col-md-12">
+                            Gráfico Área com pontos
+                                <div id="chart_div" style="width: 100%; height: 800px;"></div>
 
                             </div>
-                            Gantt
+                            <h1>% Avanço da Corrente Crítica: 10%</h1>
+                            <h1>% Consumo do Pulmão: 10%</h1>
+                            <h1>% Custo Real: R$ 1.000,00</h1>
+                            <h1>Termino Planejado: 30/12/2018</h1>
+                            <h1>Termino Previsto: 10/10/2017 </h1>
+                            <h1>Anotações: </h1>
+                            {!! Form::textarea('anotation',"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium architecto aut, autem beatae blanditiis eligendi excepturi harum iusto libero natus neque, nulla pariatur perspiciatis quo repellat repellendus repudiandae temporibus vel." ) !!}
+                            <p></p>
 
                         </div>
                         <div class="tab-pane fade" id="resources-pills">
