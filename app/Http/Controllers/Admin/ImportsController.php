@@ -161,6 +161,7 @@ class ImportsController extends Controller
      */
     public function show($id)
     {
+        dd($id);
         $import = $this->repository->find($id);
         $file = file_get_contents($import->file);
         $xml = simplexml_load_file($import->file);
