@@ -163,8 +163,6 @@ class ImportsController extends Controller
     {
 
         $import = $this->repository->find($id);
-//        $file = file_get_contents($import->file);
-        dd(file_get_contents($import->file));
         $xml = simplexml_load_file($import->file);
         $projeto = [
             "Name" => $xml->Name->__toString(),
