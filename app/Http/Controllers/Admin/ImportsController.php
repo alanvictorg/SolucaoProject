@@ -160,24 +160,12 @@ class ImportsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, DOMDocument $document)
     {
 
         $import = $this->repository->find($id);
-//        dd($import);
-        var_dump(libxml_use_internal_errors(true));
-
-        // load the document
-        $doc = new DOMDocument;
-
-        if (!$doc->load($import->file)) {
-            foreach (libxml_get_errors() as $error) {
-                print_r($error);
-            }
-
-            libxml_clear_errors();
-        }
-//        $xml = simplexml_load_file($import->file);
+//      dd($import);
+//      $xml = simplexml_load_file($import->file);
         dd(($import->file));
         $projeto = [
             "Name" => $xml->Name->__toString(),
