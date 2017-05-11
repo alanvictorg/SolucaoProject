@@ -347,9 +347,9 @@ class ImportsController extends Controller
     }
     public function getTaskByFile($file)
     {
-
         $xml = simplexml_load_file($file);
         $tasks = collect(collect(json_decode(json_encode($xml->Tasks),true  ))->first());
+        dd($tasks);
         return $tasks;
     }
 }
