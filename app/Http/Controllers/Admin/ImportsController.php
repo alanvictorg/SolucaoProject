@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\CompanyRepository;
 use App\Service\ServiceProject;
 use App\Service\ServiceTasks;
+use DOMDocument;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -163,8 +164,22 @@ class ImportsController extends Controller
     {
 
         $import = $this->repository->find($id);
-        dd($import);
-        $xml = simplexml_load_file($import->file);
+//        dd($import);
+        var_dump(libxml_use_internal_errors(true));
+
+        // load the document
+        $doc = new DOMDocument;
+
+        if (!$doc->load($import->file)) {
+            foreach (libxml_get_errors() as $error) {
+                print_r($error);
+            }
+
+            libxml_clear_errors();
+        }
+
+
+//        $xml = simplexml_load_file($import->file);
         dd(simplexml_load_file($import->file));
         $projeto = [
             "Name" => $xml->Name->__toString(),
