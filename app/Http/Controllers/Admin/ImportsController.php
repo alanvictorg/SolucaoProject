@@ -177,8 +177,6 @@ class ImportsController extends Controller
 
             libxml_clear_errors();
         }
-
-
 //        $xml = simplexml_load_file($import->file);
         dd(($import->file));
         $projeto = [
