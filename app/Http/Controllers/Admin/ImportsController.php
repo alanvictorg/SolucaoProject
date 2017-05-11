@@ -350,16 +350,17 @@ class ImportsController extends Controller
     {
         $xml = new XMLReader();
         $xml->open($file);
-        dd($xml);
+
         while ($xml->read()) {
             switch ($xml->nodeType) {
                 case (XMLReader::ELEMENT):
                     if ($xml->localName == "Tasks") {
-                    $node = $xml->expand();
-                    $dom = new DomDocument();
-                    $n = $dom->importNode($node,true);
-                    $dom->appendChild($n);
-                    $simple_xml = simplexml_import_dom($n);
+                        $node = $xml->expand();
+                        dd($node);
+                        $dom = new DomDocument();
+                        $n = $dom->importNode($node, true);
+                        $dom->appendChild($n);
+                        $simple_xml = simplexml_import_dom($n);
                     }
             }
         }
