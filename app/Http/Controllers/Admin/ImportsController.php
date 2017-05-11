@@ -166,12 +166,8 @@ class ImportsController extends Controller
     {
 
         $import = $this->repository->find($id);
-//      dd($import);
         $document = new Dom();
         $document->load($import->file);
-        $xmldata = $document->saveXML();
-//      $xml = simplexml_load_file($import->file);`
-       $data = $document->getNodeValue('Name');
 
 
         $projeto = [
