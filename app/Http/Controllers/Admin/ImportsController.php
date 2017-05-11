@@ -180,7 +180,7 @@ class ImportsController extends Controller
 
 
 //        $xml = simplexml_load_file($import->file);
-        dd(simplexml_load_file($import->file));
+        dd(($import->file));
         $projeto = [
             "Name" => $xml->Name->__toString(),
             "Title" => $xml->Title->__toString(),
