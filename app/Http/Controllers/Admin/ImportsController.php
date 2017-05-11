@@ -350,6 +350,7 @@ class ImportsController extends Controller
     {
         $xml = new XMLReader();
         $xml->open($file);
+        dd($xml);
         while ($xml->read()) {
             switch ($xml->nodeType) {
                 case (XMLReader::ELEMENT):
