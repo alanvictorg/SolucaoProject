@@ -19,6 +19,7 @@ use App\Http\Requests\ImportCreateRequest;
 use App\Http\Requests\ImportUpdateRequest;
 use App\Repositories\ImportRepository;
 use App\Validators\ImportValidator;
+use XMLReader;
 
 
 class ImportsController extends Controller
@@ -347,8 +348,21 @@ class ImportsController extends Controller
     }
     public function getTaskByFile($file)
     {
-        $xml = simplexml_load_file($file);
-        $tasks = collect(collect(json_decode(json_encode($xml->Tasks),true  ))->first());
+        $xml = new XMLReader();
+        $xml->open($file);
+        while ($xml->read()) {
+            switch ($xml->nodeType) {
+                case (XMLReader::ELEMENT):
+                    if ($xml->localName == "Tasks") {
+                    $node = $xml->expand();
+                    $dom = new DomDocument();
+                    $n = $dom->importNode($node,true);
+                    $dom->appendChild($n);
+                    $simple_xml = simplexml_import_dom($n);
+                    }
+            }
+        }
+        $tasks = collect(collect(json_decode(json_encode($simple_xml),true  ))->first());
         dd($tasks);
         return $tasks;
     }
