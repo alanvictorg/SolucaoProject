@@ -404,7 +404,7 @@
                                     <div class="card-info">
                                         <div class="card-header">Pulmão</div>
                                         <div class="card-text">
-                                            {!! print_r($pulmao['Name']) !!}
+                                            {{--{!! print_r($pulmao['Name']) !!}--}}
                                         </div>
                                     </div>
                                 </div>
@@ -412,7 +412,7 @@
                                     <div class="card-info">
                                         <div class="card-header">Quantidade de Tarefas</div>
                                         <div class="card-text">
-                                            {!! $total_tarefas !!}
+{{--                                            {!! $total_tarefas !!}--}}
                                         </div>
                                     </div>
                                 </div>

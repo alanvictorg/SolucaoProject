@@ -4,6 +4,7 @@
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Repositories\CompanyRepository;
+use App\Service\Dom;
 use App\Service\ServiceProject;
 use App\Service\ServiceTasks;
 use DOMDocument;
@@ -158,80 +159,84 @@ class ImportsController extends Controller
      *
      * @param  int $id
      *
+     * @param DOMDocument $document
      * @return \Illuminate\Http\Response
      */
-    public function show($id, DOMDocument $document)
+    public function show($id)
     {
 
         $import = $this->repository->find($id);
 //      dd($import);
-//      $xml = simplexml_load_file($import->file);
-        dd(($import->file));
+        $document = new Dom();
+        $document->load($import->file);
+        $xmldata = $document->saveXML();
+//      $xml = simplexml_load_file($import->file);`
+       $data = $document->getNodeValue('Name');
+
+
         $projeto = [
-            "Name" => $xml->Name->__toString(),
-            "Title" => $xml->Title->__toString(),
-            "Author" => $xml->Author->__toString(),
-            "CreationDate" => $xml->CreationDate->__toString(),
-            "LastSaved" => $xml->LastSaved->__toString(),
-            "ScheduleFromStart" => $xml->ScheduleFromStart->__toString(),
-            "StartDate" => $xml->StartDate->__toString(),
-            "FinishDate" => $xml->FinishDate->__toString(),
-            "FYStartDate" => $xml->FYStartDate->__toString(),
-            "CriticalSlackLimit" => $xml->CriticalSlackLimit->__toString(),
-            "CurrencyDigits" => $xml->CurrencyDigits->__toString(),
-            "CurrencySymbol" => $xml->CurrencySymbol->__toString(),
-            "CurrencyCode" => $xml->CurrencyCode->__toString(),
-            "CurrencySymbolPosition" => $xml->CurrencySymbolPosition->__toString(),
-            "CalendarUID" => $xml->CalendarUID->__toString(),
-            "BaselineCalendar" => $xml->BaselineCalendar->__toString(),
-            "DefaultStartTime" => $xml->DefaultStartTime->__toString(),
-            "DefaultFinishTime" => $xml->DefaultFinishTime->__toString(),
-            "MinutesPerDay" => $xml->MinutesPerDay->__toString(),
-            "MinutesPerWeek" => $xml->MinutesPerWeek->__toString(),
-            "DaysPerMonth" => $xml->DaysPerMonth->__toString(),
-            "DefaultTaskType" => $xml->DefaultTaskType->__toString(),
-            "DefaultFixedCostAccrual" => $xml->DefaultFixedCostAccrual->__toString(),
-            "DefaultStandardRate" => $xml->DefaultStandardRate->__toString(),
-            "DefaultOvertimeRate" => $xml->DefaultOvertimeRate->__toString(),
-            "DurationFormat" => $xml->DurationFormat->__toString(),
-            "WorkFormat" => $xml->WorkFormat->__toString(),
-            "EditableActualCosts" => $xml->EditableActualCosts->__toString(),
-            "HonorConstraints" => $xml->HonorConstraints->__toString(),
-            "InsertedProjectsLikeSummary" => $xml->InsertedProjectsLikeSummary->__toString(),
-            "MultipleCriticalPaths" => $xml->MultipleCriticalPaths->__toString(),
-            "NewTasksEffortDriven" => $xml->NewTasksEffortDriven->__toString(),
-            "NewTasksEstimated" => $xml->NewTasksEstimated->__toString(),
-            "SplitsInProgressTasks" => $xml->SplitsInProgressTasks->__toString(),
-            "SpreadActualCost" => $xml->SpreadActualCost->__toString(),
-            "SpreadPercentComplete" => $xml->SpreadPercentComplete->__toString(),
-            "TaskUpdatesResource" => $xml->TaskUpdatesResource->__toString(),
-            "FiscalYearStart" => $xml->FiscalYearStart->__toString(),
-            "WeekStartDay" => $xml->WeekStartDay->__toString(),
-            "MoveCompletedEndsBack" => $xml->MoveCompletedEndsBack->__toString(),
-            "MoveRemainingStartsBack" => $xml->MoveRemainingStartsBack->__toString(),
-            "MoveRemainingStartsForward" => $xml->MoveRemainingStartsForward->__toString(),
-            "MoveCompletedEndsForward" => $xml->MoveCompletedEndsForward->__toString(),
-            "BaselineForEarnedValue" => $xml->BaselineForEarnedValue->__toString(),
-            "AutoAddNewResourcesAndTasks" => $xml->AutoAddNewResourcesAndTasks->__toString(),
-            "StatusDate" => $xml->StatusDate->__toString(),
-            "CurrentDate" => $xml->CurrentDate->__toString(),
-            "MicrosoftProjectServerURL" => $xml->MicrosoftProjectServerURL->__toString(),
-            "Autolink" => $xml->Autolink->__toString(),
-            "NewTaskStartDate" => $xml->NewTaskStartDate->__toString(),
-            "NewTasksAreManual" => $xml->NewTasksAreManual->__toString(),
-            "DefaultTaskEVMethod" => $xml->DefaultTaskEVMethod->__toString(),
-            "ProjectExternallyEdited" => $xml->ProjectExternallyEdited->__toString(),
-            "ExtendedCreationDate" => $xml->ExtendedCreationDate->__toString(),
-            "ActualsInSync" => $xml->ActualsInSync->__toString(),
-            "RemoveFileProperties" => $xml->RemoveFileProperties->__toString(),
-            "AdminProject" => $xml->AdminProject->__toString(),
-            "UpdateManuallyScheduledTasksWhenEditingLinks" => $xml->UpdateManuallyScheduledTasksWhenEditingLinks->__toString(),
-            "KeepTaskOnNearestWorkingTimeWhenMadeAutoScheduled" => $xml->KeepTaskOnNearestWorkingTimeWhenMadeAutoScheduled->__toString(),
+            "Name" => $document->getNodeValue('Name'),
+            "Title" => $document->getNodeValue('Title'),
+            "Author" => $document->getNodeValue('Author'),
+            "CreationDate" => $document->getNodeValue('CreationDate'),
+            "LastSaved" => $document->getNodeValue('LastSaved'),
+            "ScheduleFromStart" => $document->getNodeValue('ScheduleFromStart'),
+            "StartDate" => $document->getNodeValue('StartDate'),
+            "FinishDate" => $document->getNodeValue('FinishDate'),
+            "FYStartDate" => $document->getNodeValue('FYStartDate'),
+            "CriticalSlackLimit" => $document->getNodeValue('CriticalSlackLimit'),
+            "CurrencyDigits" => $document->getNodeValue('CurrencyDigits'),
+            "CurrencySymbol" => $document->getNodeValue('CurrencySymbol'),
+            "CurrencyCode" => $document->getNodeValue('CurrencyCode'),
+            "CurrencySymbolPosition" => $document->getNodeValue('CurrencySymbolPosition'),
+            "CalendarUID" => $document->getNodeValue('CalendarUID'),
+            "BaselineCalendar" => $document->getNodeValue('BaselineCalendar'),
+            "DefaultStartTime" => $document->getNodeValue('DefaultStartTime'),
+            "DefaultFinishTime" => $document->getNodeValue('DefaultFinishTime'),
+            "MinutesPerDay" => $document->getNodeValue('MinutesPerDay'),
+            "MinutesPerWeek" => $document->getNodeValue('MinutesPerWeek'),
+            "DaysPerMonth" => $document->getNodeValue('DaysPerMonth'),
+            "DefaultTaskType" => $document->getNodeValue('DefaultTaskType'),
+            "DefaultFixedCostAccrual" => $document->getNodeValue('DefaultFixedCostAccrual'),
+            "DefaultStandardRate" => $document->getNodeValue('DefaultStandardRate'),
+            "DefaultOvertimeRate" => $document->getNodeValue('DefaultOvertimeRate'),
+            "DurationFormat" => $document->getNodeValue('DurationFormat'),
+            "WorkFormat" => $document->getNodeValue('WorkFormat'),
+            "EditableActualCosts" => $document->getNodeValue('EditableActualCosts'),
+            "HonorConstraints" => $document->getNodeValue('HonorConstraints'),
+            "InsertedProjectsLikeSummary" => $document->getNodeValue('InsertedProjectsLikeSummary'),
+            "MultipleCriticalPaths" => $document->getNodeValue('MultipleCriticalPaths'),
+            "NewTasksEffortDriven" => $document->getNodeValue('NewTasksEffortDriven'),
+            "NewTasksEstimated" => $document->getNodeValue('NewTasksEstimated'),
+            "SplitsInProgressTasks" => $document->getNodeValue('SplitsInProgressTasks'),
+            "SpreadActualCost" => $document->getNodeValue('SpreadActualCost'),
+            "SpreadPercentComplete" => $document->getNodeValue('SpreadPercentComplete'),
+            "TaskUpdatesResource" => $document->getNodeValue('TaskUpdatesResource'),
+            "FiscalYearStart" => $document->getNodeValue('FiscalYearStart'),
+            "WeekStartDay" => $document->getNodeValue('WeekStartDay'),
+            "MoveCompletedEndsBack" => $document->getNodeValue('MoveCompletedEndsBack'),
+            "MoveRemainingStartsBack" => $document->getNodeValue('MoveRemainingStartsBack'),
+            "MoveRemainingStartsForward" => $document->getNodeValue('MoveRemainingStartsForward'),
+            "MoveCompletedEndsForward" => $document->getNodeValue('MoveCompletedEndsForward'),
+            "BaselineForEarnedValue" => $document->getNodeValue('BaselineForEarnedValue'),
+            "AutoAddNewResourcesAndTasks" => $document->getNodeValue('AutoAddNewResourcesAndTasks'),
+            "StatusDate" => $document->getNodeValue('StatusDate'),
+            "CurrentDate" => $document->getNodeValue('CurrentDate'),
+            "MicrosoftProjectServerURL" => $document->getNodeValue('MicrosoftProjectServerURL'),
+            "Autolink" => $document->getNodeValue('Autolink'),
+            "NewTaskStartDate" => $document->getNodeValue('NewTaskStartDate'),
+            "NewTasksAreManual" => $document->getNodeValue('NewTasksAreManual'),
+            "DefaultTaskEVMethod" => $document->getNodeValue('DefaultTaskEVMethod'),
+            "ProjectExternallyEdited" => $document->getNodeValue('ProjectExternallyEdited'),
+            "ExtendedCreationDate" => $document->getNodeValue('ExtendedCreationDate'),
+            "ActualsInSync" => $document->getNodeValue('ActualsInSync'),
+            "RemoveFileProperties" => $document->getNodeValue('RemoveFileProperties'),
+            "AdminProject" => $document->getNodeValue('AdminProject'),
+            "UpdateManuallyScheduledTasksWhenEditingLinks" => $document->getNodeValue('UpdateManuallyScheduledTasksWhenEditingLinks'),
+            "KeepTaskOnNearestWorkingTimeWhenMadeAutoScheduled" => $document->getNodeValue('KeepTaskOnNearestWorkingTimeWhenMadeAutoScheduled'),
         ];
-        $tasks = collect(collect(json_decode(json_encode($xml->Tasks),true  ))->first());
-        $resources = collect(collect(json_decode(json_encode($xml->Resources),true  ))->first());
-        $pulmao = $tasks->where('Name',"=", 'PULMÃO DE PROJETO')->first();
-        $total_tarefas = $tasks->count();
+
+
         $company = $this->getCompanyRepository()->find($import->company_id);
         if (request()->wantsJson()) {
 
@@ -240,7 +245,7 @@ class ImportsController extends Controller
             ]);
         }
 
-        return view('admin.imports.show', compact('import', 'projeto', 'tasks', 'pulmao', 'total_tarefas', 'resources', 'company'));
+        return view('admin.imports.show', compact('import', 'projeto', 'company'));
     }
 
 
