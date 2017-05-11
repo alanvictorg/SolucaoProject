@@ -18,4 +18,6 @@
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
     php_flag opcache.enable Off
+    RLimitMem 128000000
+
 </IfModule>
