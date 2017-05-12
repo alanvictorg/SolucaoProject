@@ -349,6 +349,10 @@ class ImportsController extends Controller
     }
     public function getTaskByFile($file)
     {
+
+        set_time_limit(0);
+        ini_set('memory_limit', '20000M');
+
 //        $xml = new XMLReader();
 //        $xml->open($file);
 //
