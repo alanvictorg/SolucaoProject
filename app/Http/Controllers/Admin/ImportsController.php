@@ -348,7 +348,9 @@ class ImportsController extends Controller
 
 //        $checkDom = new \DOMDocument('1.0', 'UTF-8');
 //        $checkDom->load($data['filepath'], LIBXML_PARSEHUGE);
-        dd();
+        $file = new SplFileObject($data['filepath']);
+        $contents = $file->fread($file->getSize());
+        dd($contents);
 
         $tasks = $this->getServiceTasks()->tratarImport($this->getTaskByFile($data['filepath']), $project);
 //        dd($tasks);
