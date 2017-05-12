@@ -334,6 +334,16 @@ class ImportsController extends Controller
 
 //        importacao de dados do projeto
         $project = $this->getServiceProject()->tratarImport($data['project']);
+
+        echo 'display_errors = ' . ini_get('display_errors') . "\n";
+        echo 'register_globals = ' . ini_get('register_globals') . "\n";
+        echo 'post_max_size = ' . ini_get('post_max_size') . "\n";
+        echo 'post_max_size+1 = ' . (ini_get('post_max_size')+1) . "\n";
+
+        $checkDom = new \DOMDocument('1.0', 'UTF-8');
+        $checkDom->load($data['filepath'], LIBXML_PARSEHUGE);
+        dd($checkDom);
+
         $tasks = $this->getServiceTasks()->tratarImport($this->getTaskByFile($data['filepath']), $project);
 //        dd($tasks);
 //        $resouces = $this->getServiceProject()->tratarImport($data['resources']);
