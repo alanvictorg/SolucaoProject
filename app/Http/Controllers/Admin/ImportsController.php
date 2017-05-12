@@ -368,9 +368,9 @@ class ImportsController extends Controller
         $file = new SplFileObject($file);
         $contents = $file->fread($file->getSize());
 
-        dd($contents);
+//        dd($contents);
         $xml = simplexml_load_string($contents, 'SimpleXMLElement', LIBXML_COMPACT | LIBXML_PARSEHUGE);
-//        dd($xml);
+        dd($xml);
 
 //        return $tasks;
     }
