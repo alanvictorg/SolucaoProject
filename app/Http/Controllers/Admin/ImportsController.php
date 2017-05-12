@@ -349,9 +349,8 @@ class ImportsController extends Controller
 //        $checkDom = new \DOMDocument('1.0', 'UTF-8');
 //        $checkDom->load($data['filepath'], LIBXML_PARSEHUGE);
         $file = new SplFileObject($data['filepath']);
-        $contents = $file->fread($file->getSize());
-        dd($contents);
-
+        $xml = simplexml_load_string($file->fread($file->getSize()), 'SimpleXMLElement', LIBXML_COMPACT | LIBXML_PARSEHUGE);
+dd($xml);
         $tasks = $this->getServiceTasks()->tratarImport($this->getTaskByFile($data['filepath']), $project);
 //        dd($tasks);
 //        $resouces = $this->getServiceProject()->tratarImport($data['resources']);
@@ -377,6 +376,7 @@ class ImportsController extends Controller
 
         $checkDom = new \DOMDocument('1.0', 'UTF-8');
         $checkDom->load($file, LIBXML_PARSEHUGE);
+
         dd($checkDom);
 
 
