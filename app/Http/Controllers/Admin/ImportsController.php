@@ -334,6 +334,11 @@ class ImportsController extends Controller
 
 //        importacao de dados do projeto
         $project = $this->getServiceProject()->tratarImport($data['project']);
+        set_time_limit(0);
+        ini_set('memory_limit', '20000M');
+
+        error_reporting(-1);
+        ini_set('display_errors', 1);
 
         echo 'display_errors = ' . ini_get('display_errors') . "\n";
         echo 'register_globals = ' . ini_get('register_globals') . "\n";
