@@ -365,11 +365,14 @@ class ImportsController extends Controller
 //            }
 //        }
 //        $tasks = collect(collect(json_decode(json_encode($simple_xml),true  ))->first());
-        $document = new SplFileObject($file);
-        foreach ($document as $line) {
-            echo $document->key() . ". " . $line;
-        }
-        dd();
+        $file = new SplFileObject($file);
+        $contents = $file->fread($file->getSize());
+
+//dd($file, $contents);
+        $xml = simplexml_load_string($contents);
+        $array = (array) $xml;
+        dd($array);
+
 //        return $tasks;
     }
 }
