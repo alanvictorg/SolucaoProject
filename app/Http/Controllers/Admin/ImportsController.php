@@ -353,6 +353,23 @@ class ImportsController extends Controller
         set_time_limit(0);
         ini_set('memory_limit', '20000M');
 
+        error_reporting(-1);
+        ini_set('display_errors', 1);
+        $xml = file_get_contents($file);
+
+        echo 'filesize:              ';
+        var_dump(filesize($file));
+
+        echo 'strlen:                ';
+        var_dump(strlen($xml));
+
+        echo 'simplexml object?      ';
+        var_dump(is_object(simplexml_load_string($xml)));
+
+        echo 'Last 50 characters:    ';
+        var_dump(substr($xml, -50));
+
+
 //        $xml = new XMLReader();
 //        $xml->open($file);
 //
