@@ -95,6 +95,7 @@ class Task extends Model implements Transformable
 //        "ExtendedAttribute",
 //        "Baseline",
 //        "TimephasedData"
+        "anotation"
     ];
 
     protected $dates = [
@@ -117,4 +118,8 @@ class Task extends Model implements Transformable
     {
         return $this->belongsTo(Project::class);
     }
+   public function links()
+   {
+       return $this->hasMany(Tasklinks::class);
+   }
 }

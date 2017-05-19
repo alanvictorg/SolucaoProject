@@ -9,6 +9,7 @@
         "appstract/laravel-opcache": "^1.0",
         "barryvdh/laravel-debugbar": "^2.3",
         "consoletvs/charts": "4.*",
+        "dhtmlx/connector-php": "^3.0",
         "jansenfelipe/utils": "^2.0",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",

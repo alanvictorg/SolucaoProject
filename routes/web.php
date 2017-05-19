@@ -19,7 +19,7 @@ Route::get('/home', function () {
 });
 
 Auth::routes();
-
+Route::get('gantt/{$project}/getGantt', 'GanttController@getGantt')->name('gantt.getGantt');
 
 Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
@@ -59,6 +59,7 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('imports/search', 'ImportsController@search')->name('imports.search');
             Route::post('imports/import', 'ImportsController@import')->name('imports.import');
         });
+
     });
 
 

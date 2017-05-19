@@ -35,7 +35,7 @@ class ServiceProject
         return $this->projectRepository;
     }
 
-    public function tratarImport($data)
+    public function importProject($data)
     {
         $data['company_id'] = $data['company'];
         $project = $this->verifyprojectbycompany($data);

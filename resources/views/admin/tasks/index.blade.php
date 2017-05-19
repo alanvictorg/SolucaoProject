@@ -1,5 +1,6 @@
 @extends('layouts.base')
 @section('page_styles')
+    {!! Html::style('assets/plugins/codebase/dhtmlxgantt.css') !!}
 
 
 @endsection
@@ -105,12 +106,13 @@
 @endsection
 
 @section('page_scripts')
-    <!-- Load JS here for greater good =============================-->
-    {{--<script>--}}
-        {{--$('document').ready(function () {--}}
+    {!! Html::script('assets/plugins/codebase/dhtmlxgantt.js') !!}
+    {!! Html::script('assets/plugins/codebase/locale/locale_pt.js') !!}
+    <script type="text/javascript">
+        gantt.config.readonly = true;
+        var formatFunc = gantt.date.str_to_date("%d/%m/%Y");
+        gantt.init("gantt");
+        gantt.parse({!! $data_gantt !!});
 
-            {{--$('#role_id').select2();--}}
-        {{--});--}}
-
-    {{--</script>--}}
+    </script>
 @endsection

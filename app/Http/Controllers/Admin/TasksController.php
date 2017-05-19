@@ -2,6 +2,7 @@
 
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -32,7 +33,7 @@ class TasksController extends Controller
     public function __construct(TaskRepository $repository, TaskValidator $validator)
     {
         $this->repository = $repository;
-        $this->validator  = $validator;
+        $this->validator = $validator;
     }
 
 
@@ -74,7 +75,7 @@ class TasksController extends Controller
 
             $response = [
                 'message' => 'Task created.',
-                'data'    => $task->toArray(),
+                'data' => $task->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -86,7 +87,7 @@ class TasksController extends Controller
         } catch (ValidatorException $e) {
             if ($request->wantsJson()) {
                 return response()->json([
-                    'error'   => true,
+                    'error' => true,
                     'message' => $e->getMessageBag()
                 ]);
             }
@@ -112,6 +113,65 @@ class TasksController extends Controller
         $date_start = Carbon::parse($task->Start);
         $duration = $date_finish->diffInDays($date_start);
         $custo = Utils::moeda($task->Cost);
+//        dd($task);
+        $data_gantt = [
+            'data' => [
+                //predecessora
+                [
+                    'id' => 1,
+                    'text' => 'Task Predecessora',
+                    'start_date' => '03-04-2013',
+                    'duration' => '11',
+                    'progress' => '0.6',
+                    'open' => 'true',
+                ],
+                //task
+                [
+                    'id' => 2,
+                    'text' => $task->Name,
+                    'start_date' => $date_start->format('d-m-Y'),
+                    'duration' => $duration,
+                    'progress' => $task->PercentComplete/100,
+                    'open' => 'true',
+                    'parent' => '1'
+                ],
+                //sucessora
+                [
+                    'id' => 3,
+                    'text' => 'Task Sucessora',
+                    'start_date' => '02-04-2013',
+                    'duration' => '7',
+                    'progress' => '0.5',
+                    'open' => 'true',
+                    'parent' => '1'
+                ],
+            ],
+            'link' => [
+                [
+                    'id' => 1,
+                    'source' => 1,
+                    'target' => 2,
+                    'type' => "0"
+                ],
+                [
+                    'id' => 2,
+                    'source' => 1,
+                    'target' => 2,
+                    'type' => "0"
+                ],
+                [
+                    'id' => 3,
+                    'source' => 1,
+                    'target' => 2,
+                    'type' => "0"
+                ]
+
+            ]
+
+        ];
+        $data_gantt = json_encode($data_gantt);
+//dd($data_gantt);
+
         if (request()->wantsJson()) {
 
             return response()->json([
@@ -119,7 +179,7 @@ class TasksController extends Controller
             ]);
         }
 
-        return view('admin.tasks.show', compact('task', 'duration', 'custo'));
+        return view('admin.tasks.show', compact('task', 'duration', 'custo', 'data_gantt'));
     }
 
 
@@ -143,7 +203,7 @@ class TasksController extends Controller
      * Update the specified resource in storage.
      *
      * @param  TaskUpdateRequest $request
-     * @param  string            $id
+     * @param  string $id
      *
      * @return Response
      */
@@ -153,12 +213,11 @@ class TasksController extends Controller
         try {
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
-
             $task = $this->repository->update($request->all(), $id);
 
             $response = [
-                'message' => 'Task updated.',
-                'data'    => $task->toArray(),
+                'message' => 'Tarefa Atualizada',
+                'data' => $task->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -172,7 +231,7 @@ class TasksController extends Controller
             if ($request->wantsJson()) {
 
                 return response()->json([
-                    'error'   => true,
+                    'error' => true,
                     'message' => $e->getMessageBag()
                 ]);
             }

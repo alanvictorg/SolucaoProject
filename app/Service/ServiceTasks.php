@@ -9,6 +9,7 @@
 namespace App\Service;
 
 
+use App\Repositories\TasklinksRepository;
 use App\Repositories\TaskRepository;
 use Carbon\Carbon;
 
@@ -18,33 +19,62 @@ class ServiceTasks
      * @var TaskRepository
      */
     private $taskRepository;
+    /**
+     * @var TasklinksRepository
+     */
+    private $tasklinksRepository;
 
     /**
      * ServiceTasks constructor.
      */
-    public function __construct(TaskRepository $taskRepository)
+    public function __construct(TaskRepository $taskRepository, TasklinksRepository $tasklinksRepository)
     {
         $this->taskRepository = $taskRepository;
+        $this->tasklinksRepository = $tasklinksRepository;
     }
 
     /**
      * @return TaskRepository
      */
-    private function getTaskRepository()
+    public function getTaskRepository()
     {
         return $this->taskRepository;
     }
+
+    /**
+     * @return TasklinksRepository
+     */
+    public function getTasklinksRepository()
+    {
+        return $this->tasklinksRepository;
+    }
+
+
 
     private function storeImport($data)
     {
         $task = $this->getTaskRepository()->findWhere(['UID'=>$data['UID'],'project_id'=>$data['project_id']]);
         if ($task->isEmpty())
         {
-            return $this->getTaskRepository()->create($data);
+            $data['anotation'] = "";
+            $task =  $this->getTaskRepository()->create($data);
+            if (isset($data['PredecessorLink'])){
+                foreach ($data['PredecessorLink'] as $item)
+                {
+                    $item['task_id'] = $task->id;
+                    $item['source'] = $task->id;
+                    $links = $this->getTasklinksRepository()->create($item);
+                }
+
+
+            }
+
+            return $task;
+
         }
         return $task->first()->update($data);
     }
-    public function tratarImport($data, $project)
+    public function tratarTasks($data, $project)
     {
         foreach ($data as $key=>$row)
         {
@@ -101,11 +131,42 @@ class ServiceTasks
             {
                 $row['ActualFinish'] = Carbon::parse($row['ActualFinish']);
             }
-//            if (isset($row['PredecessorLink']))
-//            {
-//                $row['PredecessorLink'] =  $row['PredecessorLink']['PredecessorUID'];
-//
-//            }
+            if (isset($row['PredecessorLink']))
+            {
+                if(isset($row['PredecessorLink'][0]))
+                {
+                    foreach ($row['PredecessorLink'] as $key => $item)
+                    {
+                        $row['PredecessorLink'][$key] = [
+                            'PredecessorUID' => $item['PredecessorUID'],
+                            'CrossProject' => $item['CrossProject'],
+                            'LinkLag' => $item['LinkLag'],
+                            'LagFormat' => $item['LagFormat'],
+                            'target' => $item['PredecessorUID'],
+                            'type' => $item['Type'],
+                            'task_id' => "",
+                            'source'=> "",
+                        ];
+                    }
+                }else
+                {
+                    $row['PredecessorLink'][0] = [
+                        'PredecessorUID' => $row['PredecessorLink']['PredecessorUID'],
+                        'CrossProject' => $row['PredecessorLink']['CrossProject'],
+                        'LinkLag' => $row['PredecessorLink']['LinkLag'],
+                        'LagFormat' => $row['PredecessorLink']['LagFormat'],
+                        'target' => $row['PredecessorLink']['PredecessorUID'],
+                        'type' => $row['PredecessorLink']['Type'],
+                        'task_id' => "",
+                        'source'=> "",
+                    ];
+                    unset($row['PredecessorLink']['PredecessorUID']);
+                    unset($row['PredecessorLink']['CrossProject']);
+                    unset($row['PredecessorLink']['LinkLag']);
+                    unset($row['PredecessorLink']['LagFormat']);
+                    unset($row['PredecessorLink']['Type']);
+                }
+            }
 
             $task[$key] = $this->storeImport($row);
 

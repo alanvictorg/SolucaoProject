@@ -331,27 +331,9 @@ class ImportsController extends Controller
     public function import(Request $request)
     {
         $data = $request->all();
-
 //        importacao de dados do projeto
-        $project = $this->getServiceProject()->tratarImport($data['project']);
-        set_time_limit(0);
-        ini_set('memory_limit', '20000M');
-
-        error_reporting(-1);
-        ini_set('display_errors', 1);
-
-        echo 'display_errors = ' . ini_get('display_errors') . "\n";
-        echo 'register_globals = ' . ini_get('register_globals') . "\n";
-        echo 'post_max_size = ' . ini_get('post_max_size') . "\n";
-        echo 'memory_limit = ' . ini_get('memory_limit') . "\n";
-        echo 'post_max_size+1 = ' . (ini_get('post_max_size')+1) . "\n";
-
-//        $checkDom = new \DOMDocument('1.0', 'UTF-8');
-//        $checkDom->load($data['filepath'], LIBXML_PARSEHUGE);
-        $file = new SplFileObject($data['filepath']);
-        $xml = simplexml_load_string($file->fread($file->getSize()), 'SimpleXMLElement', LIBXML_COMPACT | LIBXML_PARSEHUGE);
-dd($xml);
-        $tasks = $this->getServiceTasks()->tratarImport($this->getTaskByFile($data['filepath']), $project);
+        $project = $this->getServiceProject()->importProject($data['project']);
+        $tasks = $this->getServiceTasks()->tratarTasks($this->getTaskByFile($data['filepath']), $project);
 //        dd($tasks);
 //        $resouces = $this->getServiceProject()->tratarImport($data['resources']);
         //set import como concluído
@@ -366,43 +348,22 @@ dd($xml);
     }
     public function getTaskByFile($file)
     {
+        $xml = new XMLReader();
+        $xml->open($file);
 
-        set_time_limit(0);
-        ini_set('memory_limit', '20000M');
-
-        error_reporting(-1);
-        ini_set('display_errors', 1);
-
-
-        $checkDom = new \DOMDocument('1.0', 'UTF-8');
-        $checkDom->load($file, LIBXML_PARSEHUGE);
-
-        dd($checkDom);
-
-
-//        $xml = new XMLReader();
-//        $xml->open($file);
-//
-//        while ($xml->read()) {
-//            switch ($xml->nodeType) {
-//                case (XMLReader::ELEMENT):
-//                    if ($xml->localName == "Tasks") {
-//                        $node = $xml->expand();
-//                        $dom = new DomDocument();
-//                        $n = $dom->importNode($node, true);
-//                        $dom->appendChild($n);
-//                        $simple_xml = simplexml_import_dom($n);
-//                    }
-//            }
-//        }
-//        $tasks = collect(collect(json_decode(json_encode($simple_xml),true  ))->first());
-        $file = new SplFileObject($file);
-        $contents = $file->fread($file->getSize());
-
-//        dd($contents);
-        $xml = simplexml_load_string($contents, 'SimpleXMLElement', LIBXML_COMPACT | LIBXML_PARSEHUGE);
-        dd($xml);
-
-//        return $tasks;
+        while ($xml->read()) {
+            switch ($xml->nodeType) {
+                case (XMLReader::ELEMENT):
+                    if ($xml->localName == "Tasks") {
+                        $node = $xml->expand();
+                        $dom = new DomDocument();
+                        $n = $dom->importNode($node, true);
+                        $dom->appendChild($n);
+                        $simple_xml = simplexml_import_dom($n);
+                    }
+            }
+        }
+        $tasks = collect(collect(json_decode(json_encode($simple_xml),true  ))->first());
+        return $tasks;
     }
 }

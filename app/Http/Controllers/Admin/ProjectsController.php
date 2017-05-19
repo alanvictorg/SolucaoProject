@@ -2,8 +2,11 @@
 
 
 namespace App\Http\Controllers\Admin;
+use App\Entities\Task;
 use App\Http\Controllers\Controller;
+use App\Repositories\TaskRepository;
 use App\Service\ServiceCompanies;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -15,6 +18,7 @@ use App\Http\Requests\ProjectCreateRequest;
 use App\Http\Requests\ProjectUpdateRequest;
 use App\Repositories\ProjectRepository;
 use App\Validators\ProjectValidator;
+use Dhtmlx\Connector\GanttConnector;
 
 
 class ProjectsController extends Controller
@@ -33,12 +37,25 @@ class ProjectsController extends Controller
      * @var ServiceCompanies
      */
     private $serviceCompanies;
+    /**
+     * @var TaskRepository
+     */
+    private $taskRepository;
 
-    public function __construct(ProjectRepository $repository, ProjectValidator $validator, ServiceCompanies $serviceCompanies)
+    public function __construct(ProjectRepository $repository, ProjectValidator $validator, ServiceCompanies $serviceCompanies, TaskRepository $taskRepository)
     {
         $this->repository = $repository;
         $this->validator  = $validator;
         $this->serviceCompanies = $serviceCompanies;
+        $this->taskRepository = $taskRepository;
+    }
+
+    /**
+     * @return TaskRepository
+     */
+    public function getTaskRepository()
+    {
+        return $this->taskRepository;
     }
 
     /**
@@ -130,7 +147,54 @@ class ProjectsController extends Controller
     public function show($id)
     {
         $project = $this->repository->find($id);
+        $tasks =  $this->getTaskRepository()->orderBy('UID')->findWhere(['project_id'=>$project->id]);
+        $data = [];
+        $links = [];
+        foreach ($tasks as $key=>$task)
+        {
+            $date_finish = Carbon::parse($task->Finish);
+            $date_start = Carbon::parse($task->Start);
+            $duration = $date_finish->diffInDays($date_start);
+            if ($duration == 0)
+            {
+                $duration = 1;
+            }
+            if ($task->UID != 0 )
+            {
+                $row = [
+                    'id' => $task->UID,
+                    'text' => $task->Name,
+                    'start_date' => $date_start->format('d-m-Y'),
+                    'duration' => $duration,
+                    'progress' => $task->PercentComplete/100,
+                    'open' => 'true',
+                ];
+                 array_push($data, $row);
+            }
+            if (isset($task->links)){
+                foreach ($task->links as $link)
+                {
+                    $link = [
+                        'id'=>$link->id,
+                        'source'=>$link->source,
+                        'target'=>$link->target,
+                        'type'=>$link->type,
+                    ];
+                    array_push($links, $link);
+                }
 
+            }
+
+        }
+//dd($links);
+        $data_gantt = [
+            'data' => $data,
+            'link' => $links
+
+        ];
+//        dd($data);
+        $data_gantt = json_encode($data_gantt);
+//        dd($data_gantt);
         if (request()->wantsJson()) {
 
             return response()->json([
@@ -138,7 +202,7 @@ class ProjectsController extends Controller
             ]);
         }
 
-        return view('admin.projects.show', compact('project'));
+        return view('admin.projects.show', compact('project', 'data_gantt'));
     }
 
 
