@@ -2,6 +2,7 @@
 
 
 namespace App\Http\Controllers\Admin;
+use App\Entities\Project;
 use App\Entities\Task;
 use App\Http\Controllers\Controller;
 use App\Repositories\TaskRepository;
@@ -150,6 +151,7 @@ class ProjectsController extends Controller
         $tasks =  $this->getTaskRepository()->orderBy('UID')->findWhere(['project_id'=>$project->id]);
         $data = [];
         $links = [];
+        $count = 1;
         foreach ($tasks as $key=>$task)
         {
             $date_finish = Carbon::parse($task->Finish);
@@ -161,30 +163,48 @@ class ProjectsController extends Controller
             }
             if ($task->UID != 0 )
             {
-                $row = [
-                    'id' => $task->UID,
-                    'text' => $task->Name,
-                    'start_date' => $date_start->format('d-m-Y'),
-                    'duration' => $duration,
-                    'progress' => $task->PercentComplete/100,
-                    'open' => 'true',
-                ];
+                if ($task->parent)
+                {
+                    $row = [
+                        'id' => $task->UID,
+                        'text' => $task->Name,
+                        'start_date' => $date_start->format('d-m-Y'),
+                        'duration' => $duration,
+                        'progress' => $task->PercentComplete/100,
+                        'open' => 'true',
+                        'parent'=>$task->parent
+
+                    ];
+                }else
+                    {
+                        $row = [
+                            'id' => $task->UID,
+                            'text' => $task->Name,
+                            'start_date' => $date_start->format('d-m-Y'),
+                            'duration' => $duration,
+                            'progress' => $task->PercentComplete/100,
+                            'open' => 'true'
+                        ];
+                    }
+
                  array_push($data, $row);
             }
             if (isset($task->links)){
-                foreach ($task->links as $link)
+                foreach ($task->links as $key=>$link)
                 {
-                    $link = [
-                        'id'=>$link->id,
-                        'source'=>$link->source,
-                        'target'=>$link->target,
-                        'type'=>$link->type,
-                    ];
-                    array_push($links, $link);
+                    if($this->getTaskUID($task->project->id, $link->source) != null && $this->getTaskUID($task->project->id, $link->target) != null )
+                    {
+                        $link_task = [
+                            'id'=>$count,
+                            'source'=>$link->source,
+                            'target'=>$link->target,
+                            'type'=>$link->type,
+                        ];
+                        array_push($links, $link_task);
+                        $count++;
+                    }
                 }
-
             }
-
         }
 //dd($links);
         $data_gantt = [
@@ -192,6 +212,7 @@ class ProjectsController extends Controller
             'link' => $links
 
         ];
+//        dd($data_gantt['link']);
 //        dd($data);
         $data_gantt = json_encode($data_gantt);
 //        dd($data_gantt);
@@ -203,6 +224,10 @@ class ProjectsController extends Controller
         }
 
         return view('admin.projects.show', compact('project', 'data_gantt'));
+    }
+    private function getTaskUID($project_id, $uid)
+    {
+        return $this->getTaskRepository()->findWhere(['project_id'=>$project_id, 'uid'=>$uid])->first();
     }
 
 

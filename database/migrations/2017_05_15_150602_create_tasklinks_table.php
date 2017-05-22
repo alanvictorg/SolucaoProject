@@ -17,7 +17,7 @@ class CreateTasklinksTable extends Migration
             $table->increments('id');
             $table->integer('task_id')->unsigned()->nullable()->default(null);
             $table->foreign('task_id')->references('id')->on('tasks');
-            $table->string('PredecessorUID');
+            $table->integer('PredecessorUID');
             $table->string('CrossProject');
             $table->string('LinkLag');
             $table->string('LagFormat');

@@ -62,7 +62,7 @@ class ServiceTasks
                 foreach ($data['PredecessorLink'] as $item)
                 {
                     $item['task_id'] = $task->id;
-                    $item['source'] = $task->id;
+//                    $item['source'] = $task->UID;
                     $links = $this->getTasklinksRepository()->create($item);
                 }
 
@@ -78,6 +78,7 @@ class ServiceTasks
     {
         foreach ($data as $key=>$row)
         {
+//            dd($row);
             $row['project_id'] = $project->id;
             if (isset($row['CreateDate']))
             {
@@ -142,11 +143,13 @@ class ServiceTasks
                             'CrossProject' => $item['CrossProject'],
                             'LinkLag' => $item['LinkLag'],
                             'LagFormat' => $item['LagFormat'],
-                            'target' => $item['PredecessorUID'],
+                            'target' =>$row['UID'] ,
                             'type' => $item['Type'],
                             'task_id' => "",
-                            'source'=> "",
+                            'source'=> $item['PredecessorUID'],
                         ];
+                        $row['parent'] = $item['PredecessorUID'];
+
                     }
                 }else
                 {
@@ -155,11 +158,12 @@ class ServiceTasks
                         'CrossProject' => $row['PredecessorLink']['CrossProject'],
                         'LinkLag' => $row['PredecessorLink']['LinkLag'],
                         'LagFormat' => $row['PredecessorLink']['LagFormat'],
-                        'target' => $row['PredecessorLink']['PredecessorUID'],
+                        'target' => $row['UID'],
                         'type' => $row['PredecessorLink']['Type'],
                         'task_id' => "",
-                        'source'=> "",
+                        'source'=> $row['PredecessorLink']['PredecessorUID'],
                     ];
+                    $row['parent'] = $row['PredecessorLink']['PredecessorUID'];
                     unset($row['PredecessorLink']['PredecessorUID']);
                     unset($row['PredecessorLink']['CrossProject']);
                     unset($row['PredecessorLink']['LinkLag']);
@@ -167,6 +171,7 @@ class ServiceTasks
                     unset($row['PredecessorLink']['Type']);
                 }
             }
+
 
             $task[$key] = $this->storeImport($row);
 

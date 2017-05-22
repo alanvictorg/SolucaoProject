@@ -4,6 +4,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\TasklinksRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -29,11 +30,24 @@ class TasksController extends Controller
      * @var TaskValidator
      */
     protected $validator;
+    /**
+     * @var TasklinksRepository
+     */
+    private $tasklinksRepository;
 
-    public function __construct(TaskRepository $repository, TaskValidator $validator)
+    public function __construct(TaskRepository $repository, TaskValidator $validator, TasklinksRepository $tasklinksRepository)
     {
         $this->repository = $repository;
         $this->validator = $validator;
+        $this->tasklinksRepository = $tasklinksRepository;
+    }
+
+    /**
+     * @return TasklinksRepository
+     */
+    public function getTasklinksRepository()
+    {
+        return $this->tasklinksRepository;
     }
 
 
@@ -113,16 +127,33 @@ class TasksController extends Controller
         $date_start = Carbon::parse($task->Start);
         $duration = $date_finish->diffInDays($date_start);
         $custo = Utils::moeda($task->Cost);
-//        dd($task);
+
+        $link = $task->links->first()->PredecessorUID;
+        $links = $this->getTasklinksRepository()->findWhere(['PredecessorUID'=>$task->UID]);
+        $task_predecessora = $this->getTaskUID($task->project->id, $link);
+        $task_sucessora = $this->getTaskUID($task->project->id, $task->parent);
+        $count = 3;
+        foreach ($links as $link)
+        {
+            $sucessora = [
+                'text' => $link->task->Name,
+                'start_date' => Carbon::parse($link->task->Start)->format('d-m-Y'),
+                'progress' => $link->task->PercentComplete/100,
+                'duration' => Carbon::parse($link->task->Finish)->diffInDays(Carbon::parse($link->task->Start)),
+                'open' => 'true',
+                'parent' => '2'
+            ];
+        }
+//        dd($task, $task_predecessora,$links);
         $data_gantt = [
             'data' => [
                 //predecessora
                 [
                     'id' => 1,
-                    'text' => 'Task Predecessora',
-                    'start_date' => '03-04-2013',
-                    'duration' => '11',
-                    'progress' => '0.6',
+                    'text' => $task_predecessora->Name,
+                    'start_date' => Carbon::parse($task_predecessora->Start)->format('d-m-Y'),
+                    'duration' =>  Carbon::parse($task_predecessora->Finish)->diffInDays(Carbon::parse($task_predecessora->Start)),
+                    'progress' => $task_predecessora->PercentComplete/100,
                     'open' => 'true',
                 ],
                 //task
@@ -135,40 +166,26 @@ class TasksController extends Controller
                     'open' => 'true',
                     'parent' => '1'
                 ],
-                //sucessora
-                [
-                    'id' => 3,
-                    'text' => 'Task Sucessora',
-                    'start_date' => '02-04-2013',
-                    'duration' => '7',
-                    'progress' => '0.5',
-                    'open' => 'true',
-                    'parent' => '1'
-                ],
+
             ],
             'link' => [
                 [
                     'id' => 1,
                     'source' => 1,
                     'target' => 2,
-                    'type' => "0"
+                    'type' => "1"
                 ],
                 [
                     'id' => 2,
-                    'source' => 1,
-                    'target' => 2,
-                    'type' => "0"
+                    'source' => 2,
+                    'target' => 3,
+                    'type' => "1"
                 ],
-                [
-                    'id' => 3,
-                    'source' => 1,
-                    'target' => 2,
-                    'type' => "0"
-                ]
 
             ]
 
         ];
+        array_push($data_gantt['data'], $sucessora);
         $data_gantt = json_encode($data_gantt);
 //dd($data_gantt);
 
@@ -181,7 +198,10 @@ class TasksController extends Controller
 
         return view('admin.tasks.show', compact('task', 'duration', 'custo', 'data_gantt'));
     }
-
+    private function getTaskUID($project_id, $uid)
+    {
+        return $this->repository->findWhere(['project_id'=>$project_id, 'uid'=>$uid])->first();
+    }
 
     /**
      * Show the form for editing the specified resource.

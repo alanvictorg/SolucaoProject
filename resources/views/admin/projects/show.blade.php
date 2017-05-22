@@ -21,6 +21,7 @@
             </div>
             </p>
         </div>
+        {{--        {!! ($data_gantt) !!}--}}
         <section class="section">
             <div class="row sameheight-container">
                 <div class="">
@@ -89,20 +90,40 @@
     {!! Html::script('assets/plugins/codebase/locale/locale_pt.js') !!}
     {!! Html::script('assets/plugins/codebase/ext/dhtmlxgantt_tooltip.js') !!}
     <script type="text/javascript">
-                gantt.config.readonly = true;
-//        var formatFunc = gantt.date.str_to_date("%d/%m/%Y");
+                        gantt.config.readonly = true;
+        //        var formatFunc = gantt.date.str_to_date("%d/%m/%Y");
         gantt.attachEvent("onLoadEnd", function () {
             gantt.message({
-                text: "Loaded " + gantt.getTaskCount() + " tasks, " + gantt.getLinkCount() + " links",
+                text: "Carregando " + gantt.getTaskCount() + " tasks, " + gantt.getLinkCount() + " links",
                 expire: 8 * 1000
             });
         });
         gantt.config.highlight_critical_path = true;
+        gantt.config.open_tree_initially = true;
+        gantt.config.work_time = true;
+        gantt.config.correct_work_time = true;
+        gantt.config.show_progress = true;
+        gantt.config.scale_unit = "month";
+        gantt.config.step = 1;
+        gantt.config.date_scale = "%F, %Y";
+        gantt.config.link_arrow_size = 8;
+        gantt.config.columns=[
+            {name:"text",       label:"Tarefa",  tree:true, width:'*' },
+            {name:"start_date", label:"Início", align: "center" },
+            {name:"duration",   label:"Duração",   align: "center" },
+        ];
+        gantt.templates.grid_date_format = function(date){
+            return gantt.date.date_to_str(gantt.config.date_grid)(date);
+        };
+        gantt.config.details_on_dblclick = true;
 
-
+        gantt.attachEvent("onTaskDblClick", function(id,e){
+            window.location = "{!! url('admin/tasks') !!}/"+id;
+            return true;
+        });
+        gantt.config.date_grid = "%d/%m/%Y";
         gantt.init("gantt");
         gantt.parse({!! $data_gantt !!});
-        gantt.config.date_grid = "%d/%m/%Y";
 
     </script>
 @endsection

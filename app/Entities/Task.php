@@ -12,6 +12,7 @@ class Task extends Model implements Transformable
 
     protected $fillable = [
         "project_id",
+        "parent",
         "UID",
         "Name",
         "Active",
