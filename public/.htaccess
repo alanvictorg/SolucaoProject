@@ -2,9 +2,9 @@
     <IfModule mod_negotiation.c>
         Options -MultiViews
     </IfModule>
+
     php_flag opcache.enable Off
-    LimitRequestBody 2147483647
-    LimitXMLRequestBody 100000000
+
     RewriteEngine On
 
     # Redirect Trailing Slashes If Not A Folder...
